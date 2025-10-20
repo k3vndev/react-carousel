@@ -32,6 +32,7 @@ export const Carousel = ({
 }: Props) => {
   const elementRef = useRef<HTMLDivElement>(null)
   const [tileWidth, setTileWidth] = useState<number>(-1)
+  const [selectedIndex, setSelectedIndex] = useState(0)
 
   // Calculate the width of the tile based on the screen size
   const refreshWidth = useCallback(() => {
@@ -49,6 +50,18 @@ export const Carousel = ({
     return () => window.removeEventListener('resize', refreshWidth)
   }, [visibleItems, gap])
 
+  // Calculate selected index
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!elementRef.current) return
+      const { scrollLeft } = elementRef.current
+      setSelectedIndex(Math.round(scrollLeft / tileWidth))
+    }
+
+    elementRef.current.addEventListener('scroll', handleScroll)
+    return () => elementRef.current?.removeEventListener('scroll', handleScroll)
+  }, [tileWidth, gap])
+
   const widthForTile = tileWidth !== -1 ? `${tileWidth}px` : undefined
 
   const tileProps = {
@@ -57,7 +70,9 @@ export const Carousel = ({
   }
 
   return (
-    <CarouselContext.Provider value={{ tileProps, elementRef, gap, tileWidth, visibleItems, itemsCount }}>
+    <CarouselContext.Provider
+      value={{ tileProps, elementRef, gap, tileWidth, visibleItems, itemsCount, selectedIndex }}
+    >
       <section className={twMerge(`relative w-full ${className?.wrapper ?? ''}`)} style={style?.wrapper}>
         <div
           ref={elementRef}

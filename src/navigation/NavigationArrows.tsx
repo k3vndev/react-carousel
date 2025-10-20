@@ -1,7 +1,10 @@
+'use client'
+
 import { useContext, useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { CarouselContext } from '../context/carousel-context'
 import { ChevronIcon } from '../icons/Chevron'
+import { dispatchNavigationActionEvent } from '../lib/dispatchNavigationActionEvent'
 import type { ReusableComponent } from '../types'
 import { useCarousel } from '../useCarousel'
 
@@ -86,6 +89,12 @@ interface NavigationButtonsProps extends ReusableComponent {
 
 const Arrow = ({ className = '', children, onClick, visible, ...props }: NavigationButtonsProps) => {
   const visibility = visible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+  const { elementRef } = useContext(CarouselContext)
+
+  const handleClick = () => {
+    onClick()
+    dispatchNavigationActionEvent(elementRef.current)
+  }
 
   return (
     <div
@@ -101,7 +110,7 @@ const Arrow = ({ className = '', children, onClick, visible, ...props }: Navigat
           button shadow-card shadow-black/30 relative bg-black/50 
           backdrop-blur-xl md:*:size-10 *:size-6
         `}
-        onClick={onClick}
+        onClick={handleClick}
         disabled={!visible}
       >
         {children}
