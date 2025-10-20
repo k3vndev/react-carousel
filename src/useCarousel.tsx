@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { CarouselContext } from './context/carousel-context'
 
 export const useCarousel = () => {
-  const { tileProps, elementRef, tileWidth, visibleItems, gap } = useContext(CarouselContext)
+  const { elementRef, tileWidth, visibleItems, gap, itemsCount } = useContext(CarouselContext)
 
   const scroll = (value: number) => {
     elementRef.current?.scrollTo({
@@ -32,11 +32,18 @@ export const useCarousel = () => {
     scroll(scrollAmount)
   }
 
-  const navigator = {
+  const carouselData = {
+    tileWidth,
+    visibleItems,
+    gap,
+    itemsCount
+  }
+
+  const carouselNavigator = {
     scrollLeft: (itemsDistance?: number) => scrollToDirection(true, itemsDistance),
     scrollRight: (itemsDistance?: number) => scrollToDirection(false, itemsDistance),
     scrollToIndex
   }
 
-  return { tileProps, navigator }
+  return { carouselNavigator, carouselData }
 }

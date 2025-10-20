@@ -6,18 +6,25 @@ import type { ReusableComponent } from '../types'
 import { useCarousel } from '../useCarousel'
 
 interface Props {
-  left?: ReusableComponent
-  right?: ReusableComponent
-  both?: ReusableComponent
+  className?: {
+    left?: string
+    right?: string
+    both?: string
+  }
+  style?: {
+    left?: React.CSSProperties
+    right?: React.CSSProperties
+    both?: React.CSSProperties
+  }
 }
 
-export const NavigationArrows = ({ left, right, both }: Props) => {
+export const NavigationArrows = ({ className, style }: Props) => {
   const { elementRef, gap, tileWidth, visibleItems } = useContext(CarouselContext)
   const [buttonVisible, setButtonVisible] = useState({ left: false, right: false })
   const MIN_DIST_FROM_BORDER = 32
   const initialScroll = useRef(true)
 
-  const { navigator } = useCarousel()
+  const { carouselNavigator } = useCarousel()
 
   // Initial scroll to the first tile
   useEffect(() => {
@@ -51,23 +58,21 @@ export const NavigationArrows = ({ left, right, both }: Props) => {
   return (
     <>
       <Arrow
-        className={`left-0 -translate-x-1/2 ${both?.className ?? ''} ${left?.className ?? ''}`}
-        onClick={navigator.scrollLeft}
+        className={`left-0 -translate-x-1/2 ${className?.both ?? ''} ${className?.left ?? ''}`}
+        onClick={carouselNavigator.scrollLeft}
         visible={buttonVisible.left}
-        style={{ ...left?.style, ...both?.style }}
-        ref={left?.ref ?? both?.ref}
+        style={{ ...style?.left, ...style?.both }}
       >
-        <ChevronIcon className='rotate-180' />
+        <ChevronIcon className='text-white/50 rotate-180' />
       </Arrow>
 
       <Arrow
-        className={`right-0 translate-x-1/2 ${both?.className ?? ''} ${right?.className ?? ''}`}
-        onClick={navigator.scrollRight}
+        className={`right-0 translate-x-1/2 ${className?.both ?? ''} ${className?.right ?? ''}`}
+        onClick={carouselNavigator.scrollRight}
         visible={buttonVisible.right}
-        style={{ ...right?.style, ...both?.style }}
-        ref={right?.ref ?? both?.ref}
+        style={{ ...style?.right, ...style?.both }}
       >
-        <ChevronIcon />
+        <ChevronIcon className='text-white/50 ' />
       </Arrow>
     </>
   )

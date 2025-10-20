@@ -3,23 +3,32 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { CarouselContext } from './context/carousel-context'
-import type { ReusableComponent } from './types'
 
-interface Props extends ReusableComponent {
+interface Props {
+  itemsCount: number
   visibleItems?: number
   gap?: number
   children?: React.ReactNode
+  navigationHandler?: React.ReactNode
 
-  navigation: React.ReactNode
+  className?: {
+    wrapper?: string
+    scrollZone?: string
+  }
+  style?: {
+    wrapper?: React.CSSProperties
+    scrollZone?: React.CSSProperties
+  }
 }
 
 export const Carousel = ({
   children,
-  navigation,
+  itemsCount,
+  navigationHandler,
   visibleItems = 1,
   gap = 0,
-  className = '',
-  ...props
+  className,
+  style
 }: Props) => {
   const elementRef = useRef<HTMLDivElement>(null)
   const [tileWidth, setTileWidth] = useState<number>(-1)
@@ -48,20 +57,25 @@ export const Carousel = ({
   }
 
   return (
-    <CarouselContext.Provider value={{ tileProps, elementRef, gap, tileWidth, visibleItems }}>
-      <section className={twMerge(`relative ${className}`)} {...props}>
+    <CarouselContext.Provider value={{ tileProps, elementRef, gap, tileWidth, visibleItems, itemsCount }}>
+      <section className={twMerge(`relative w-full ${className?.wrapper ?? ''}`)} style={style?.wrapper}>
         <div
           ref={elementRef}
           className={`
-            flex overflow-x-scroll w-full max-w-full
-            scrollbar-hide snap-x snap-mandatory rounded-[1.25rem]
+            flex overflow-x-scroll max-w-full w-full
+            scrollbar-hide snap-x snap-mandatory rounded-2xl
+            ${className?.scrollZone ?? ''}
           `}
-          style={{ contain: 'layout inline-size', gap: `${gap}px` }}
+          style={{
+            contain: 'layout inline-size',
+            gap: `${gap}px`,
+            ...style?.scrollZone
+          }}
         >
-          {children}
+          {tileWidth > 0 && children}
         </div>
 
-        {navigation}
+        {navigationHandler}
       </section>
     </CarouselContext.Provider>
   )

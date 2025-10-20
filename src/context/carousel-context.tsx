@@ -9,6 +9,7 @@ interface CarouselContextType {
   gap: number
   visibleItems: number
   tileWidth: number
+  itemsCount: number
 }
 
 export const CarouselContext = createContext<CarouselContextType>({
@@ -16,5 +17,6 @@ export const CarouselContext = createContext<CarouselContextType>({
   elementRef: { current: null },
   gap: 0,
   visibleItems: 0,
-  tileWidth: 0
+  tileWidth: 0,
+  itemsCount: 0
 })
