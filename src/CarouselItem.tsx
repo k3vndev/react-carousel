@@ -12,7 +12,7 @@ export const CarouselItem = ({ children, className = '', ...props }: Props) => {
 
   return (
     <div
-      className={twMerge(`h-64 rounded-2xl bg-gray-700 ${tileProps.className} ${className}`)}
+      className={twMerge(`h-full rounded-2xl bg-gray-700 ${tileProps.className} ${className}`)}
       style={{ ...tileProps.style, ...props.style }}
       ref={props.ref}
     >

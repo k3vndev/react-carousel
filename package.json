@@ -1,6 +1,6 @@
 {
   "name": "@k3vndev/react-carousel",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -13,6 +13,9 @@
   "scripts": {
     "build": "tsup src/index.tsx --format esm,cjs --dts"
   },
+  "files": [
+    "dist/"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",

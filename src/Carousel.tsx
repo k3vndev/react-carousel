@@ -73,11 +73,11 @@ export const Carousel = ({
     <CarouselContext.Provider
       value={{ tileProps, elementRef, gap, tileWidth, visibleItems, itemsCount, selectedIndex }}
     >
-      <section className={twMerge(`relative w-full ${className?.wrapper ?? ''}`)} style={style?.wrapper}>
+      <section className={twMerge(`relative w-full h-64 ${className?.wrapper ?? ''}`)} style={style?.wrapper}>
         <div
           ref={elementRef}
           className={`
-            flex overflow-x-scroll max-w-full w-full
+            flex overflow-x-scroll max-w-full w-full h-full
             scrollbar-hide snap-x snap-mandatory rounded-2xl
             ${className?.scrollZone ?? ''}
           `}
