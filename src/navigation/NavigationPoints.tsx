@@ -33,7 +33,7 @@ export const NavigationPoints = ({ className, style }: Props) => {
     >
       {itemsArray.map((_, i) => {
         const isSelected = selectedIndex === i
-        const className_ = `${isSelected ? (className.selectedPoint ?? '') : ''} ${className?.points ?? ''}`
+        const className_ = `${isSelected ? (className?.selectedPoint ?? '') : ''} ${className?.points ?? ''}`
 
         return (
           <Point index={i} key={i} isSelected={isSelected} style={style?.points} className={className_} />
