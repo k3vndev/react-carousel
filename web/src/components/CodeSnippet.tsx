@@ -26,7 +26,7 @@ export const CodeSnippet = ({ children }: Props) => {
         text-gray-300 flex items-center sm:gap-8 gap-4 font-mono mt-8
       `}
     >
-      <span className='sm:text-lg'>{children}</span>
+      <span className='sm:text-lg text-xs'>{children}</span>
       <button className='button' disabled={copied} onClick={handleClick}>
         {copied ? <CheckIcon /> : <CopyIcon />}
       </button>

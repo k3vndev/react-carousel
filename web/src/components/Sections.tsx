@@ -9,7 +9,6 @@ export const Sections = () => {
     'https://cdn.pixabay.com/photo/2023/07/04/08/31/cats-8105667_640.jpg',
     'https://cdn.pixabay.com/photo/2021/04/28/17/11/animals-6214563_640.jpg',
     'https://cdn.pixabay.com/photo/2018/07/08/14/16/cat-3523992_640.jpg'
-    // 'https://preview.redd.it/i-just-finished-edgerunners-my-heart-is-officially-broken-v0-6uvij0dnkxud1.gif?format=png8&s=b25a693ab248418dd9653ec252822b2e97349ff9'
   ]
 
   return (
@@ -68,14 +67,15 @@ const TextZone = () => (
     <h1
       className={`
         lg:text-6xl md:text-5xl text-4xl font-bold py-4 text-center
-        text-gradient-yellow
+        text-gradient-yellow px-4
       `}
     >
       A carousel component
     </h1>
     <h3
       className={`
-        lg:text-5xl md:text-3xl text-2xl font-bold text-gray-400 text-center text-pretty
+        lg:text-5xl md:text-3xl text-2xl font-bold 
+        text-gray-400 text-center text-pretty px-4
       `}
     >
       Ready for every occasion
