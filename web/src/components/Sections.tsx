@@ -1,4 +1,4 @@
-import { Carousel, CarouselItem, NavigationArrows } from '../../../dist'
+import { Carousel, CarouselItem, NavigationArrows } from '@k3vndev/react-carousel'
 import { CodeSnippet } from './CodeSnippet'
 
 export const Sections = () => {
@@ -22,7 +22,7 @@ export const Sections = () => {
       <main
         className={`
           flex items-center min-h-screen w-full justify-center 
-          2xl:gap-32 gap-16 not-lg:py-16 not-2xl:flex-col
+          2xl:gap-32 gap-16 not-2xl:py-16 not-2xl:flex-col
           animate-fade-in anim-blur-xl
         `}
       >
@@ -55,7 +55,7 @@ export const Sections = () => {
           animate-fade-in anim-delay-100
         `}
         style={{
-          backgroundImage: 'url(./public/squares.gif)',
+          backgroundImage: 'url(/squares.gif)',
           backgroundSize: '150px'
         }}
       />

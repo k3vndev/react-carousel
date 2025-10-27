@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@k3vndev/react-carousel':
+        specifier: 0.2.6
+        version: 0.2.6(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(tailwindcss@4.1.14)
       '@k3vndev/tw-animations':
         specifier: ^0.3.0
         version: 0.3.0(tailwind@4.0.0)
@@ -301,6 +304,13 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@k3vndev/react-carousel@0.2.6':
+    resolution: {integrity: sha512-eDUTFCjHP0dlebQw6X5hyAPzXHe+gx33oX/U77twWB914E8+kClDsTbFtsIqxjgyZgzUt+xnEHxyAiS5fxACVg==}
+    peerDependencies:
+      react: '>=18'
+      react-dom: '>=18'
+      tailwindcss: '>=4.0.0'
 
   '@k3vndev/tw-animations@0.3.0':
     resolution: {integrity: sha512-lSQOlM8sFuF4ILgrXrjnuIFVkxx/UNYirz0PvKgFzFJR+UpuV64oX20HHdj4EkV13X5U8hZK64kYl/Qswf797g==}
@@ -1943,6 +1953,9 @@ packages:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
 
+  tailwind-merge@3.3.1:
+    resolution: {integrity: sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g==}
+
   tailwind@4.0.0:
     resolution: {integrity: sha512-LlUNoD/5maFG1h5kQ6/hXfFPdcnYw+1Z7z+kUD/W/E71CUMwcnrskxiBM8c3G8wmPsD1VvCuqGYMHviI8+yrmg==}
     deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
@@ -2320,6 +2333,13 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@k3vndev/react-carousel@0.2.6(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(tailwindcss@4.1.14)':
+    dependencies:
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
+      tailwind-merge: 3.3.1
+      tailwindcss: 4.1.14
 
   '@k3vndev/tw-animations@0.3.0(tailwind@4.0.0)':
     dependencies:
@@ -4091,6 +4111,8 @@ snapshots:
   supports-color@7.2.0:
     dependencies:
       has-flag: 4.0.0
+
+  tailwind-merge@3.3.1: {}
 
   tailwind@4.0.0:
     dependencies:

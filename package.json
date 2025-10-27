@@ -1,9 +1,10 @@
 {
   "name": "@k3vndev/react-carousel",
-  "version": "0.2.2",
-  "description": "",
+  "version": "0.2.6",
+  "description": "A cool carousel system for React and TailwindCSS. Build your own navigation, animations, and autoplay logic with ease.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
+  "style": "dist/index.css",
   "types": "dist/index.d.ts",
   "peerDependencies": {
     "react": ">=18",

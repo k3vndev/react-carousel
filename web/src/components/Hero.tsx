@@ -1,4 +1,4 @@
-import { Carousel, CarouselItem, NavigationAutomatic, NavigationPoints } from '../../../dist'
+import { Carousel, CarouselItem, NavigationAutomatic, NavigationPoints } from '@k3vndev/react-carousel'
 
 export const Hero = () => {
   const catImages = [
@@ -44,7 +44,7 @@ export const Hero = () => {
         }}
         navigationHandler={
           <>
-            <NavigationPoints className={{ selectedPoint: 'bg-yellow-400' }} />
+            <NavigationPoints className={{ points: '[&.active]:bg-yellow-400' }} />
             <NavigationAutomatic />
           </>
         }

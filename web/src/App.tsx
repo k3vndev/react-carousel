@@ -1,6 +1,7 @@
-import '../../dist/index.css'
 import { Hero } from './components/Hero'
 import { Sections } from './components/Sections'
+
+import '../node_modules/@k3vndev/react-carousel/dist/index.css'
 
 function App() {
   return (
