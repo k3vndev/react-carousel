@@ -20,7 +20,7 @@ export const Sections = () => {
     >
       <main
         className={`
-          flex items-center min-h-screen w-full justify-center 
+          flex items-center min-h-dvh h-dvh w-full justify-center 
           2xl:gap-32 gap-16 not-2xl:py-16 not-2xl:flex-col
           animate-fade-in anim-blur-xl
         `}
@@ -35,7 +35,7 @@ export const Sections = () => {
           navigationHandler={<NavigationArrows />}
         >
           {catImages.map(src => (
-            <CarouselItem className='sm:h-150 h-96' key={src}>
+            <CarouselItem className='lg:h-150 sm:h-96 h-64' key={src}>
               <img
                 src={src}
                 className='object-cover size-full rounded-xl select-none'
@@ -64,14 +64,14 @@ export const Sections = () => {
 
 const TextZone = () => (
   <div className='flex flex-col lg:gap-3 items-center'>
-    <h1
+    <h2
       className={`
         lg:text-6xl md:text-5xl text-4xl font-bold py-4 text-center
         text-gradient-yellow px-4
       `}
     >
       A carousel component
-    </h1>
+    </h2>
     <h3
       className={`
         lg:text-5xl md:text-3xl text-2xl font-bold 

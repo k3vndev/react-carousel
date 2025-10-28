@@ -21,10 +21,13 @@ export const Footer = () => (
     <span className='not-sm:hidden text-gray-500'>—</span>
 
     <span className='text-gray-400 text-center text-pretty'>
-      Most cat images came from{' '}
-      <a className='hover:underline' href='https://pixabay.com' target='_blank' rel='noopener'>
-        Pixabay
-      </a>
+      Most cat images came from <Link>pixabay.com</Link> and <Link>unsplash.com</Link>
     </span>
   </footer>
+)
+
+const Link = ({ children }: { children: string }) => (
+  <a className='hover:underline text-gray-300' href={`https://${children}`} target='_blank' rel='noopener'>
+    {children}
+  </a>
 )

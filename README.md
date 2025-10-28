@@ -1,6 +1,6 @@
 ## 🌀 React Carousel
 
-A cool carousel system for React and TailwindCSS.
+A cool carousel component for React and TailwindCSS.
 Build your own navigation, animations, and autoplay logic with ease.
 
 [![npm version](https://img.shields.io/npm/v/@k3vndev/react-carousel?color=blue)](https://www.npmjs.com/package/@k3vndev/react-carousel) [![Made with React](https://img.shields.io/badge/Made%20with-React-blue?logo=react)](#)

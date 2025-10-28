@@ -16,11 +16,12 @@ export const Hero = () => {
   return (
     <div
       className={`
-        flex flex-col min-h-screen h-screen w-screen
-        relative items-center justify-center gap-24
+        flex flex-col min-h-screen w-full h-screen
+        relative items-center justify-center lg:gap-28 sm:gap-20 gap-10
+        not-sm:-translate-y-13
       `}
     >
-      <div className='flex flex-col gap-8 items-center px-8'>
+      <div className='flex flex-col sm:gap-8 gap-4 items-center px-8'>
         <h1
           className={`
             lg:text-7xl md:text-5xl sm:text-3xl text-xl font-bold 
@@ -29,14 +30,14 @@ export const Hero = () => {
         >
           @k3vndev/react-carousel
         </h1>
-        <h3
+        <h2
           className={`
             lg:text-5xl md:text-4xl text-3xl px-4 font-bold text-gray-400 text-center text-pretty
-            ${animSlideInL} anim-delay-200
+            ${animSlideInL} anim-delay-200 text-wrap max-w-full
           `}
         >
           A lightweight React carousel built with Tailwind CSS
-        </h3>
+        </h2>
       </div>
 
       <Carousel
