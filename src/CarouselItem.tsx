@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge'
 import { CarouselContext } from './context/carousel-context'
 import { useCombinedRef } from './hooks/useCombinedRef'
 import type { ReusableComponent } from './types'
+import './styles.css'
 
 interface Props extends ReusableComponent {
   /** The content to be displayed inside the carousel item */

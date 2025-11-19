@@ -7,10 +7,6 @@
   @apply bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-yellow-600;
 }
 
-@utility button {
-  @apply cursor-pointer transition hover:brightness-125 active:brightness-75 active:scale-90 select-none disabled:pointer-events-none disabled:opacity-80;
-}
-
 @utility w-max-pad {
   max-width: calc(100vw - 4rem);
   width: 100vw;

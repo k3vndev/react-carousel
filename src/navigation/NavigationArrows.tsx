@@ -8,6 +8,7 @@ import { ChevronIcon } from '../icons/Chevron'
 import { dispatchNavigationActionEvent } from '../lib/dispatchNavigationActionEvent'
 import type { ReusableComponent } from '../types'
 import { useCarousel } from '../useCarousel'
+import '../styles.css'
 
 interface Props {
   /**
@@ -75,6 +76,8 @@ export const NavigationArrows = ({ className, style, ref }: Props) => {
   const initialScroll = useRef(true)
   const { carouselNavigator } = useCarousel()
 
+  const isFirstRender = useRef(true)
+
   // Initial scroll behavior
   useEffect(() => {
     if (buttonVisible.left && initialScroll.current && tileWidth) {
@@ -97,7 +100,12 @@ export const NavigationArrows = ({ className, style, ref }: Props) => {
   }
 
   useEffect(() => {
-    handleULScroll()
+    // Delay the first scroll event to give some time for layout calculations
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      setTimeout(handleULScroll, 300)
+    }
+
     elementRef.current?.addEventListener('scroll', handleULScroll)
     return () => elementRef.current?.removeEventListener('scroll', handleULScroll)
   }, [visibleItems, tileWidth])
@@ -144,7 +152,10 @@ interface NavigationButtonsProps extends ReusableComponent {
  * Handles click actions and visibility transitions.
  */
 const Arrow = ({ className = '', children, onClick, visible, ref, ...props }: NavigationButtonsProps) => {
-  const visibility = visible ? 'visible opacity-100 scale-100' : 'not-visible opacity-0 scale-50'
+  const visibility = visible
+    ? 'visible opacity-100 scale-100 button *:cursor-pointer'
+    : 'not-visible opacity-0 scale-50'
+
   const { elementRef } = useContext(CarouselContext)
   const baseRef = useRef<HTMLDivElement>(null)
   const combinedRef = useCombinedRef(ref, baseRef)
@@ -166,7 +177,7 @@ const Arrow = ({ className = '', children, onClick, visible, ref, ...props }: Na
       <button
         className={twMerge(`
           p-2 rounded-full bg-gray-60 border border-white/25 text-gray-20
-          button shadow-black shadow-2xl relative bg-black/85 
+          shadow-black shadow-2xl relative bg-black/85 
           backdrop-blur-xl md:*:size-10 *:size-6
         `)}
         onClick={handleClick}

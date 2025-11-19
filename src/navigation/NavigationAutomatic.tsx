@@ -5,6 +5,7 @@ import { CarouselContext } from '../context/carousel-context'
 import { useFreshRefs } from '../hooks/useFreshRefs'
 import { NAVIGATION_EVENT_NAME } from '../lib/dispatchNavigationActionEvent'
 import { useCarousel } from '../useCarousel'
+import '../styles.css'
 
 interface Props {
   /**

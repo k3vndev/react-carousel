@@ -1,10 +1,5 @@
 @import 'tailwindcss';
 
-.scrollbar-hide {
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+@utility button {
+  @apply cursor-pointer transition hover:brightness-125 active:brightness-75 active:scale-90 select-none disabled:pointer-events-none disabled:opacity-80;
 }

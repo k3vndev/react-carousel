@@ -7,6 +7,7 @@ import { useCombinedRef } from '../hooks/useCombinedRef'
 import { dispatchNavigationActionEvent } from '../lib/dispatchNavigationActionEvent'
 import type { ReusableComponent } from '../types'
 import { useCarousel } from '../useCarousel'
+import '../styles.css'
 
 interface Props {
   /** Additional CSS/Tailwind class names for the wrapper and points components. */

@@ -140,13 +140,17 @@ export const Carousel = ({
           ref={scrollRef}
           className={twMerge(`
             flex overflow-x-scroll max-w-full w-full h-full
-            scrollbar-hide snap-x snap-mandatory rounded-2xl
+            snap-x snap-mandatory rounded-2xl [&::-webkit-scrollbar]:hidden
             ${className?.scrollZone ?? ''}
           `)}
           style={{
             contain: 'layout inline-size',
             gap: `${gap}px`,
-            ...style?.scrollZone
+            ...style?.scrollZone,
+
+            // Hide scrollbar for IE, Edge and Firefox. Chromium browsers handled via Tailwind class above.
+            msOverflowStyle: 'none',
+            scrollbarWidth: 'none'
           }}
         >
           {tileWidth > 0 && children}
