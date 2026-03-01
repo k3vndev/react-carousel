@@ -7,6 +7,10 @@
     "module": "ESNext",
     "types": ["vite/client"],
     "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@k3vndev/react-carousel": ["../src/index.ts"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",

@@ -12,7 +12,9 @@ export const CodeSnippet = ({ children }: Props) => {
     setCopied(true)
 
     const codeText = children?.toString()
-    codeText && navigator.clipboard.writeText(codeText)
+    if (codeText) {
+      navigator.clipboard.writeText(codeText)
+    }
 
     setTimeout(() => {
       setCopied(false)
