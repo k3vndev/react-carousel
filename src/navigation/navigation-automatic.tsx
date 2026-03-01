@@ -1,64 +1,22 @@
 'use client'
 
 import { useContext, useEffect, useRef } from 'react'
-import { CarouselContext } from '../context/carousel-context'
-import { useFreshRefs } from '../hooks/useFreshRefs'
-import { NAVIGATION_EVENT_NAME } from '../lib/dispatchNavigationActionEvent'
-import { useCarousel } from '../useCarousel'
+import { CarouselContext } from '../context'
+import { useCarousel, useFreshRefs } from '../hooks'
+import type { NavigationAutomaticComponent, NavigationAutomaticProps } from '../types'
+import { NAVIGATION_EVENT_NAME } from '../utils'
 import '../styles.css'
 
-interface Props {
-  /**
-   * Time (in milliseconds) between each automatic slide.
-   * @default 2000
-   */
-  slideCooldown?: number
-
-  /**
-   * Delay (in milliseconds) before resuming automatic sliding after user interaction interrupts it.
-   * @default 4000
-   */
-  slideRestartCooldown?: number
-
-  /**
-   * If `true`, prevents pausing automatic navigation on user interactions (tap, hold, hover, etc).
-   * @default false
-   */
-  preventStopOnInteraction?: boolean
-}
-
 /**
- * `NavigationAutomatic` enables automatic carousel navigation (auto-sliding).
+ * Automatic carousel navigation (autoplay).
  *
- * It moves to the next item after a specified cooldown and loops back to the first one.
- * It automatically pauses when the user interacts (scroll, hover, touch), unless disabled via `preventStopOnInteraction`.
- *
- * We recommend combining it with `NavigationPoints`.
- *
- * @example
- * ```tsx
- * <Carousel
- *   navigationHandler={<>
- *     <NavigationAutomatic />
- *     <NavigationPoints />
- *   </>}
- *   visibleItems={1}
- *   itemsCount={3}
- * >
- *   <CarouselItem>Slide 1</CarouselItem>
- *   <CarouselItem>Slide 2</CarouselItem>
- *   <CarouselItem>Slide 3</CarouselItem>
- * </Carousel>
- * ```
- *
- * @param {Props} props - The automatic navigation configuration.
- * @returns {null} This component doesn’t render any DOM elements.
+ * @see NavigationAutomaticComponent
  */
-export const NavigationAutomatic = ({
+export const NavigationAutomatic: NavigationAutomaticComponent = ({
   slideCooldown = 2000,
   slideRestartCooldown = 4000,
   preventStopOnInteraction = false
-}: Props) => {
+}: NavigationAutomaticProps) => {
   const { elementRef, itemsCount, selectedIndex } = useContext(CarouselContext)
   const { carouselNavigator } = useCarousel()
   const timeoutRef = useRef<number | null>(null)

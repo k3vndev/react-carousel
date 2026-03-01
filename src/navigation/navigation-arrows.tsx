@@ -2,74 +2,23 @@
 
 import { useContext, useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { CarouselContext } from '../context/carousel-context'
-import { useCombinedRef } from '../hooks/useCombinedRef'
-import { ChevronIcon } from '../icons/Chevron'
-import { dispatchNavigationActionEvent } from '../lib/dispatchNavigationActionEvent'
-import type { ReusableComponent } from '../types'
-import { useCarousel } from '../useCarousel'
+import { CarouselContext } from '../context'
+import { useCarousel, useCombinedRef } from '../hooks'
+import { ChevronIcon } from '../icons'
+import type { NavigationArrowsComponent, NavigationArrowsProps, ReusableComponent } from '../types'
+import { emitNavigationEvent } from '../utils'
 import '../styles.css'
 
-interface Props {
-  /**
-   * Custom class names for each arrow button or both.
-   * You can use `[&.visible]:` and `[&.not-visible]:` with Tailwind to style the arrow buttons.
-   *
-   * @example
-   * ```tsx
-   * className={{ left: '[&.visible]:bg-yellow-400', right: '[&.visible]:bg-red-400' }}
-   * ```
-   */
-  className?: {
-    /** Extra classes for the left navigation arrow. */
-    left?: string
-    /** Extra classes for the right navigation arrow. */
-    right?: string
-    /** Classes applied to both arrows. */
-    both?: string
-  }
-
-  /** Optional inline styles for arrows. */
-  style?: {
-    /** Inline style for the left arrow. */
-    left?: React.CSSProperties
-    /** Inline style for the right arrow. */
-    right?: React.CSSProperties
-    /** Inline style applied to both arrows. */
-    both?: React.CSSProperties
-  }
-
-  ref?: {
-    /** Ref for the left arrow wrapper element. */
-    left?: React.RefObject<HTMLDivElement | null>
-    /** Ref for the right arrow wrapper element. */
-    right?: React.RefObject<HTMLDivElement | null>
-  }
-}
-
 /**
- * `NavigationArrows` provides previous/next buttons for the Carousel.
+ * Previous/next arrow navigation for `Carousel`.
  *
- * Buttons automatically appear and hide depending on scroll position.
- *
- * @example
- * ```tsx
- * <Carousel
- *   navigationHandler={<NavigationArrows />}
- *   itemsCount={5}
- * >
- *   <CarouselItem>Slide 1</CarouselItem>
- *   <CarouselItem>Slide 2</CarouselItem>
- *   <CarouselItem>Slide 3</CarouselItem>
- *   <CarouselItem>Slide 4</CarouselItem>
- *   <CarouselItem>Slide 5</CarouselItem>
- * </Carousel>
- * ```
- *
- * @param {Props} props - Component props for `NavigationArrows`.
- * @returns {JSX.Element} The rendered navigation arrows.
+ * @see NavigationArrowsComponent
  */
-export const NavigationArrows = ({ className, style, ref }: Props) => {
+export const NavigationArrows: NavigationArrowsComponent = ({
+  className,
+  style,
+  ref
+}: NavigationArrowsProps) => {
   const { elementRef, gap, tileWidth, visibleItems } = useContext(CarouselContext)
   const [buttonVisible, setButtonVisible] = useState({ left: false, right: false })
   const MIN_DIST_FROM_BORDER = 32
@@ -162,7 +111,7 @@ const Arrow = ({ className = '', children, onClick, visible, ref, ...props }: Na
 
   const handleClick = () => {
     onClick()
-    dispatchNavigationActionEvent(elementRef.current)
+    emitNavigationEvent(elementRef.current)
   }
 
   return (

@@ -2,70 +2,17 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { CarouselContext } from './context/carousel-context'
-import { useCombinedRef } from './hooks/useCombinedRef'
+import { CarouselContext } from './context'
+import { useCombinedRef } from './hooks'
+import type { CarouselComponent } from './types'
 import './styles.css'
 
-interface Props {
-  /** Total number of items in the carousel. */
-  itemsCount: number
-  /** Number of items visible at once. Defaults to 1. */
-  visibleItems?: number
-  /** Gap in pixels between tiles. Defaults to 0. */
-  gap?: number
-  /** Child `CarouselItem`s. */
-  children?: React.ReactNode
-  /**
-   * The navigation handler component(s) you wanna use.
-   *
-   * Example: `<NavigationPoints />`, `<NavigationArrows />`, `<NavigationAutomatic />`, or custom.
-   */
-  navigationHandler?: React.ReactNode
-
-  className?: {
-    /** Additional CSS/Tailwind class names for the wrapper component. */
-    wrapper?: string
-    /** Additional CSS/Tailwind class names for the inner scroll zone. */
-    scrollZone?: string
-  }
-  style?: {
-    /** Inline styles for the wrapper component. */
-    wrapper?: React.CSSProperties
-    /** Inline styles for the inner scroll zone. */
-    scrollZone?: React.CSSProperties
-  }
-  ref?: {
-    /** Optional ref for the wrapper element. */
-    wrapper?: React.Ref<HTMLElement>
-    /** Optional ref for the scrollable inner zone. */
-    scrollZone?: React.Ref<HTMLDivElement>
-  }
-}
-
 /**
- * A horizontal scrollable Carousel component.
+ * Horizontal scrollable carousel component.
  *
- * Displays a set of items in a scrollable horizontal layout.
- * Handles snapping, tile sizing, and exposes tile info via `CarouselContext`.
- *
- * @example
- * ```tsx
- * <Carousel
- *   itemsCount={3}
- *   visibleItems={1}
- *   gap={16}
- *   className={{ wrapper: 'max-w-xl' }}
- *   navigationHandler={<NavigationPoints />}
- * >
- *   <CarouselItem>Item 1</CarouselItem>
- *   <CarouselItem>Item 2</CarouselItem>
- *   <CarouselItem>Item 3</CarouselItem>
- * </Carousel>
- * ```
- *
- * @returns {JSX.Element} The Carousel component.
+ * @see CarouselComponent
  */
-export const Carousel = ({
+export const Carousel: CarouselComponent = ({
   children,
   itemsCount,
   navigationHandler,
@@ -74,7 +21,7 @@ export const Carousel = ({
   className,
   style,
   ref
-}: Props) => {
+}) => {
   // Refs
   const baseWrapperRef = useRef<HTMLElement>(null)
   const baseScrollRef = useRef<HTMLDivElement>(null)

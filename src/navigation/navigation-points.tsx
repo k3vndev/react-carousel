@@ -2,67 +2,22 @@
 
 import { useContext, useRef } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { CarouselContext } from '../context/carousel-context'
-import { useCombinedRef } from '../hooks/useCombinedRef'
-import { dispatchNavigationActionEvent } from '../lib/dispatchNavigationActionEvent'
-import type { ReusableComponent } from '../types'
-import { useCarousel } from '../useCarousel'
+import { CarouselContext } from '../context'
+import { useCarousel, useCombinedRef } from '../hooks'
+import type { NavigationPointsComponent, NavigationPointsProps, ReusableComponent } from '../types'
+import { emitNavigationEvent } from '../utils'
 import '../styles.css'
 
-interface Props {
-  /** Additional CSS/Tailwind class names for the wrapper and points components. */
-  className?: {
-    /** Extra classes for the wrapper element. */
-    wrapper?: string
-    /**
-     * Extra classes for each point element.
-     * You can use `[&.active]:` and `[&.not-active]:` with Tailwind to style the active points.
-     *
-     * @example
-     * ```tsx
-     * className={{ points: '[&.active]:bg-yellow-400' }}
-     * ```
-     */
-    points?: string
-  }
-
-  /** Optional inline styles for wrapper and points. */
-  style?: {
-    /** Styles for the wrapper element. */
-    wrapper?: React.CSSProperties
-    /** Styles for each point element. */
-    points?: React.CSSProperties
-  }
-
-  ref?: {
-    /** Ref to the wrapper element containing all navigation points. */
-    wrapper?: React.RefObject<HTMLDivElement | null>
-    /** Ref to the individual point elements. */
-    points?: React.RefObject<HTMLButtonElement | null>
-  }
-}
-
 /**
- * `NavigationPoints` renders a row of circular buttons to represent and navigate between carousel slides.
+ * Dot-based slide navigation for `Carousel`.
  *
- * It syncs automatically with the current carousel state via `CarouselContext`.
- *
- * @example
- * ```tsx
- * <Carousel
- *   navigationHandler={<NavigationPoints />}
- *   itemsCount={3}
- * >
- *   <CarouselItem>Slide 1</CarouselItem>
- *   <CarouselItem>Slide 2</CarouselItem>
- *   <CarouselItem>Slide 3</CarouselItem>
- * </Carousel>
- * ```
- *
- * @param {Props} props - The props for NavigationPoints.
- * @returns {JSX.Element} The rendered navigation component.
+ * @see NavigationPointsComponent
  */
-export const NavigationPoints = ({ className, style, ref }: Props) => {
+export const NavigationPoints: NavigationPointsComponent = ({
+  className,
+  style,
+  ref
+}: NavigationPointsProps) => {
   const { itemsCount, selectedIndex } = useContext(CarouselContext)
   const baseWrapperRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useCombinedRef(ref?.wrapper, baseWrapperRef)
@@ -111,7 +66,7 @@ const Point = ({ index, isSelected, className = '', style, ref }: PointProps) =>
 
   const handleClick = () => {
     carouselNavigator.scrollToIndex(index)
-    dispatchNavigationActionEvent(elementRef.current)
+    emitNavigationEvent(elementRef.current)
   }
 
   const selectedStyle = isSelected

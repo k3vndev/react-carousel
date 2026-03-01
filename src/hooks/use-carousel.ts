@@ -1,27 +1,13 @@
 import { useContext } from 'react'
-import { CarouselContext } from './context/carousel-context'
+import { CarouselContext } from '../context'
+import type { CarouselData, CarouselNavigator, UseCarouselHook, UseCarouselReturn } from '../types'
 
 /**
- * Hook that provides full control over a Carousel instance.
+ * Hook that exposes carousel state and navigation helpers.
  *
- * It exposes both the `carouselData` (read-only info like item count and width)
- * and `carouselNavigator` (functions to control scroll behavior).
- *
- * Designed to make it simple to build custom navigation components such as
- * buttons, indicators, or automatic sliders.
- *
- * @example
- * ```tsx
- * const { carouselNavigator, carouselData } = useCarousel()
- *
- * // Move to next item
- * <button onClick={() => carouselNavigator.scrollRight()}>Next</button>
- *
- * // Move to first slide
- * <button onClick={() => carouselNavigator.scrollToIndex(0)}>Go to Start</button>
- * ```
+ * @see UseCarouselHook
  */
-export const useCarousel = () => {
+export const useCarousel: UseCarouselHook = () => {
   const { elementRef, tileWidth, visibleItems, gap, itemsCount, selectedIndex } = useContext(CarouselContext)
 
   /** Smoothly scrolls to the given X value. */
@@ -66,7 +52,7 @@ export const useCarousel = () => {
   /**
    * Read-only data about the current carousel instance.
    */
-  const carouselData = {
+  const carouselData: CarouselData = {
     tileWidth,
     visibleItems,
     gap,
@@ -77,11 +63,12 @@ export const useCarousel = () => {
   /**
    * Object with methods to navigate programmatically.
    */
-  const carouselNavigator = {
+  const carouselNavigator: CarouselNavigator = {
     scrollLeft: (itemsDistance?: number) => scrollToDirection(true, itemsDistance),
     scrollRight: (itemsDistance?: number) => scrollToDirection(false, itemsDistance),
     scrollToIndex
   }
 
-  return { carouselNavigator, carouselData }
+  const result: UseCarouselReturn = { carouselNavigator, carouselData }
+  return result
 }
