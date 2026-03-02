@@ -1,16 +1,8 @@
-import { Carousel, CarouselItem, NavigationAutomatic, NavigationPoints } from '@k3vndev/react-carousel'
+import { Carousel, CarouselItem, NavigationDots } from '@k3vndev/react-carousel'
+import { getCatImages } from '../utils/getCatImages'
 
 export const Hero = () => {
-  const catImages = [
-    'https://www.boredpanda.com/blog/wp-content/uploads/2023/05/64759aba71bba_SpCbHBI_d__700.webp',
-    'https://images.unsplash.com/photo-1478098711619-5ab0b478d6e6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNhdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=500',
-    'https://images.unsplash.com/photo-1498100152307-ce63fd6c5424?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTF8fGNhdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=500',
-    'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzR8fGNhdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=500',
-    'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzZ8fGNhdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=500',
-    'https://images.unsplash.com/photo-1549545931-59bf067af9ab?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTZ8fGNhdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=500',
-    'https://images.unsplash.com/photo-1519052537078-e6302a4968d4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGNhdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=500'
-  ]
-
+  const catImages = getCatImages('hero', 7)
   const animSlideInL = 'animate-slide-in-l anim-blur-lg anim-opacity-0 anim-duration-1000 anim-ease-out-back'
 
   return (
@@ -42,18 +34,10 @@ export const Hero = () => {
 
       <Carousel
         itemsCount={catImages.length}
-        className={{
-          wrapper: `
-            md:w-2xl w-max-pad animate-slide-in-b anim-slide-move-2xl anim-blur-lg anim-opacity-0
-            anim-duration-1000 anim-ease-out-back anim-delay-500
-          `
-        }}
-        navigationHandler={
-          <>
-            <NavigationPoints className={{ points: '[&.active]:bg-yellow-400' }} />
-            <NavigationAutomatic />
-          </>
-        }
+        className='md:w-2xl w-max-pad animate-slide-in-b anim-slide-move-2xl anim-blur-lg anim-opacity-0
+            anim-duration-1000 anim-ease-out-back anim-delay-500'
+        navigationHandler={<NavigationDots className='[&>button.active]:bg-yellow-400' />}
+        autoScroll
       >
         {catImages.map((src, index) => (
           <CarouselItem className='sm:h-96 h-64' key={index}>
