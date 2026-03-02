@@ -8,17 +8,44 @@ import { useCarouselInternal } from '../hooks/use-carousel-internal'
 import { cn } from '../utils/cn'
 
 /**
- * Horizontal scrollable carousel component.
+ * A horizontal scrollable Carousel component.
  *
- * @see CarouselComponent
+ * Displays a set of items in a scrollable horizontal layout.
+ * Handles snapping, tile sizing, and exposes tile info via `CarouselContext`.
+ *
+ * @example
+ * ```tsx
+ * <Carousel
+ *   itemsCount={3}
+ *   visibleItems={1}
+ *   gap={16}
+ *   className='max-w-xl'
+ *   navigationHandler={<NavigationPoints />}
+ * >
+ *   <CarouselItem>Item 1</CarouselItem>
+ *   <CarouselItem>Item 2</CarouselItem>
+ *   <CarouselItem>Item 3</CarouselItem>
+ * </Carousel>
+ * ```
+ *
+ * @example The rendered HTML structure of the `Carousel` component will look like this:
+ * ```tsx
+ * <section class="relative w-full">
+ *   <div class="scroll-zone">
+ *     <!-- Carousel items will be rendered here -->
+ *   </div>
+ *
+ *   <!-- Navigation handlers will be rendered here -->
+ * </section>
+ * ```
  */
 export const Carousel: CarouselComponent = props => {
   const { context, refs } = useCarouselInternal(props)
-  useAutoScroll(props.autoScroll ?? false, context)
+  const autoplayWaitingTime = useAutoScroll(props.autoScroll ?? false, context)
   const { className, children } = props
 
   return (
-    <CarouselContext.Provider value={context}>
+    <CarouselContext.Provider value={{ ...context, autoplayWaitingTime }}>
       <section className={cn('relative w-full ', className)} ref={refs.wrapper} draggable={false}>
         <div
           ref={refs.scroll}

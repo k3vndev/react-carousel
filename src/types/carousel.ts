@@ -48,25 +48,4 @@ export interface CarouselProps {
   autoScroll?: boolean | AutoScrollConfig
 }
 
-/**
- * A horizontal scrollable Carousel component.
- *
- * Displays a set of items in a scrollable horizontal layout.
- * Handles snapping, tile sizing, and exposes tile info via `CarouselContext`.
- *
- * @example
- * ```tsx
- * <Carousel
- *   itemsCount={3}
- *   visibleItems={1}
- *   gap={16}
- *   className={{ wrapper: 'max-w-xl' }}
- *   navigationHandler={<NavigationPoints />}
- * >
- *   <CarouselItem>Item 1</CarouselItem>
- *   <CarouselItem>Item 2</CarouselItem>
- *   <CarouselItem>Item 3</CarouselItem>
- * </Carousel>
- * ```
- */
 export type CarouselComponent = (props: CarouselProps) => React.JSX.Element

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { CarouselContextType } from '../context'
 import { NAVIGATION_EVENT_NAME } from '../utils'
 import '../styles.css'
@@ -11,46 +11,47 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
   const timeoutRef = useRef<number | null>(null)
   const refs = useFreshRefs(context)
 
-  const defaultConfig = {
-    slideCooldown: 2000,
-    slideRestartCooldown: 4000,
-    preventStopOnInteraction: false
-  } satisfies AutoScrollConfig
-
   const configInitialValue = config === false ? null : config === true ? {} : config
   const configRef = useRef(configInitialValue ? { ...defaultConfig, ...configInitialValue } : null)
+
+  const [waitingTime, setWaitingTime] = useState<number | null>(null)
 
   const stopTimeout = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
       timeoutRef.current = null
     }
+    setWaitingTime(null)
   }
 
   const startTimeout = (initialTime: number) => {
     stopTimeout()
 
+    setWaitingTime(initialTime)
     timeoutRef.current = setTimeout(() => {
-      const { selectedIndex, navigator, itemsCount } = refs.current
-      const nextIndex = selectedIndex < itemsCount - 1 ? selectedIndex + 1 : 0
+      const { selectedIndex, navigator, itemsCount, visibleItems } = refs.current
 
-      console.log((navigator as any).tileWidth)
+      const nextIndex: number = (() => {
+        const maxIndex = itemsCount - visibleItems
+        const next = selectedIndex + 1
+        return next <= maxIndex ? next : 0
+      })()
 
       navigator.scrollToIndex(nextIndex)
-      startTimeout(defaultConfig.slideCooldown)
+      startTimeout(defaultConfig.slideInterval)
     }, initialTime)
   }
 
   useEffect(() => {
     if (!configRef.current) return
 
-    const { slideCooldown, slideRestartCooldown, preventStopOnInteraction } = configRef.current
+    const { slideInterval, slideResetDelay, stopOnInteraction } = configRef.current
     const { elementRef } = refs.current
 
-    startTimeout(slideCooldown)
-    const restart = () => startTimeout(slideRestartCooldown)
+    startTimeout(slideInterval)
+    const restart = () => startTimeout(slideResetDelay)
 
-    if (!elementRef.current || preventStopOnInteraction) return
+    if (!elementRef.current || !stopOnInteraction) return
 
     const element = elementRef.current
     element.addEventListener('pointerenter', stopTimeout)
@@ -72,4 +73,12 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
       element.removeEventListener(NAVIGATION_EVENT_NAME, restart)
     }
   }, [])
+
+  return waitingTime
 }
+
+const defaultConfig = {
+  slideInterval: 2000,
+  slideResetDelay: 4000,
+  stopOnInteraction: true
+} satisfies AutoScrollConfig

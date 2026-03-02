@@ -108,10 +108,8 @@ export const useCarouselInternal = ({ itemsCount, visibleItems = 1, gap = 0, ref
     style: { width: widthForTile, maxWidth: widthForTile, minWidth: widthForTile }
   }
 
-  const contextValue: CarouselContextType = useMemo(() => {
-    console.log({ navigator })
-
-    return {
+  const contextValue: CarouselContextType = useMemo(
+    () => ({
       tileProps,
       elementRef: scrollRef,
       gap,
@@ -120,10 +118,9 @@ export const useCarouselInternal = ({ itemsCount, visibleItems = 1, gap = 0, ref
       itemsCount,
       selectedIndex,
       navigator
-    }
-  }, [tileProps, gap, visibleItems, tileWidth, itemsCount, selectedIndex, navigator])
-
-  console.log({ tileWidth })
+    }),
+    [tileProps, gap, visibleItems, tileWidth, itemsCount, selectedIndex, navigator]
+  )
 
   return {
     context: contextValue,

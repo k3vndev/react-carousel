@@ -5,15 +5,30 @@ import { useCarousel, useCombinedRef } from '../../hooks'
 import { emitNavigationEvent } from '../../utils'
 import '../../styles.css'
 import { useCarouselContext } from '../../context'
-import type { NavigationDotsComponent, NavigationDotsProps } from '../../types/navigation-points'
+import type { NavigationDotsComponent, NavigationDotsProps } from '../../types/navigation-dots'
 import { cn } from '../../utils/cn'
 
 /**
- * Dot-based slide navigation for `Carousel`.
+ * Dot-based navigation handler for `Carousel`.
  *
- * @see NavigationDotsComponent
+ * @example
+ * ```tsx
+ * <NavigationDots className='[&>button.active]:bg-yellow-400' />
+ * ```
+ *
+ * @example The rendered HTML structure of the `NavigationDots` component will look like this:
+ * ```tsx
+ * <div class="absolute">
+ *   <button class="dot active" />
+ *   <button class="dot not-active" />
+ *   <button class="dot not-active" />
+ * </div>
  */
-export const NavigationDots: NavigationDotsComponent = ({ className, ref }: NavigationDotsProps) => {
+export const NavigationDots: NavigationDotsComponent = ({
+  className,
+  ref,
+  noAutoScrollAnimation = false
+}: NavigationDotsProps) => {
   const { itemsCount, selectedIndex, visibleItems } = useCarouselContext()
   const baseWrapperRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useCombinedRef(ref, baseWrapperRef)
@@ -26,8 +41,8 @@ export const NavigationDots: NavigationDotsComponent = ({ className, ref }: Navi
       className={cn('absolute left-1/2 -translate-x-1/2 -bottom-10 flex gap-6', className)}
     >
       {itemsArray.map((_, i) => {
-        const isSelected = selectedIndex === i || (i >= selectedIndex && i < selectedIndex + visibleItems)
-        return <DotButton key={i} index={i} isSelected={isSelected} />
+        const isActive = selectedIndex === i || (i >= selectedIndex && i < selectedIndex + visibleItems)
+        return <DotButton key={i} index={i} {...{ noAutoScrollAnimation, isActive }} />
       })}
     </div>
   )
@@ -35,8 +50,9 @@ export const NavigationDots: NavigationDotsComponent = ({ className, ref }: Navi
 
 interface PointProps {
   index: number
-  isSelected: boolean
+  isActive: boolean
   ref?: React.RefObject<HTMLButtonElement | null>
+  noAutoScrollAnimation?: boolean
 }
 
 /**
@@ -44,26 +60,36 @@ interface PointProps {
  *
  * Automatically handles carousel navigation when clicked.
  */
-const DotButton = ({ index, isSelected }: PointProps) => {
+const DotButton = ({ index, isActive, noAutoScrollAnimation }: PointProps) => {
   const { carouselNavigator } = useCarousel()
-  const { elementRef } = useCarouselContext()
+  const { elementRef, autoplayWaitingTime } = useCarouselContext()
+
+  const animationAdd = 400 // Compensates for transition duration of the dot
 
   const handleClick = () => {
     carouselNavigator.scrollToIndex(index)
     emitNavigationEvent(elementRef.current)
   }
 
-  const selectedStyle = isSelected
-    ? 'active bg-white/90 scale-120'
-    : 'not-active bg-white/25 hover:bg-white/40'
+  const activeStyle = isActive ? 'active bg-white/90 scale-120' : 'not-active bg-white/25 hover:bg-white/40'
+
+  const style: React.CSSProperties =
+    isActive && autoplayWaitingTime && !noAutoScrollAnimation
+      ? {
+          animation: 'navigation-dots-autoplay-progress linear both',
+          animationDuration: `${autoplayWaitingTime + animationAdd}ms`
+        }
+      : {}
 
   return (
     <button
       onClick={handleClick}
-      className={cn('button relative size-4 rounded-full transition', selectedStyle)}
+      className={cn(
+        "dot button relative size-4 rounded-full transition duration-100 after:content-[''] after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:size-[200%] after:bg-transparent",
+        activeStyle
+      )}
       draggable={false}
-    >
-      <div className='absolute left-1/2 top-1/2 -translate-1/2 size-[200%] bg-transparent' />
-    </button>
+      style={style}
+    />
   )
 }

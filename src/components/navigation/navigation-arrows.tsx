@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useCarouselContext } from '../../context'
-import { useCarousel, useCombinedRef } from '../../hooks'
+import { useCarousel } from '../../hooks'
 import { ChevronIcon } from '../../icons'
 import type { NavigationArrowsComponent, NavigationArrowsProps } from '../../types'
 import { emitNavigationEvent } from '../../utils'
@@ -10,9 +10,21 @@ import '../../styles.css'
 import { cn } from '../../utils/cn'
 
 /**
- * Previous/next arrow navigation for `Carousel`.
+ * Previous/next arrow navigation handler for `Carousel`.
  *
- * @see NavigationArrowsComponent
+ * @example
+ * ```tsx
+ * <NavigationArrows className='text-yellow-400 [&>left]:bg-black' />
+ * ```
+ *
+ * @example The rendered HTML structure of the `NavigationArrows` component will look like this:
+ * ```tsx
+ * <button class="left">
+ *   <svg class="rotate-180" />
+ * </button>
+ * <button class="right">
+ *   <svg class="rotate-0" />
+ * </button>
  */
 export const NavigationArrows: NavigationArrowsComponent = ({ className }: NavigationArrowsProps) => {
   const { elementRef, gap, tileWidth, visibleItems } = useCarouselContext()
@@ -55,52 +67,40 @@ export const NavigationArrows: NavigationArrowsComponent = ({ className }: Navig
     return () => elementRef.current?.removeEventListener('scroll', handleULScroll)
   }, [visibleItems, tileWidth])
 
-  const leftRef = useRef<HTMLDivElement>(null)
-  const rightRef = useRef<HTMLDivElement>(null)
-
   return (
     <>
-      <Arrow
-        ref={leftRef}
-        className={cn('left-0 -translate-x-1/2', className)}
+      <ArrowButton
+        className={cn('left left-0 -translate-x-1/2', className)}
         onClick={carouselNavigator.scrollLeft}
         visible={buttonVisible.left}
       >
-        <ChevronIcon className='text-white/50 rotate-180' />
-      </Arrow>
+        <ChevronIcon className='rotate-180' />
+      </ArrowButton>
 
-      <Arrow
-        ref={rightRef}
-        className={cn('right-0 translate-x-1/2', className)}
+      <ArrowButton
+        className={cn('right right-0 translate-x-1/2', className)}
         onClick={carouselNavigator.scrollRight}
         visible={buttonVisible.right}
       >
-        <ChevronIcon className='text-white/50' />
-      </Arrow>
+        <ChevronIcon />
+      </ArrowButton>
     </>
   )
 }
 
-interface NavigationButtonsProps {
+interface ArrowButtonProps {
   className?: string
   children: React.ReactNode
   onClick: () => void
   visible?: boolean
-  ref?: React.RefObject<HTMLDivElement | null>
 }
 
-/**
- * Internal component for each navigation arrow.
- * Handles click actions and visibility transitions.
- */
-const Arrow = ({ className = '', children, onClick, visible, ref, ...props }: NavigationButtonsProps) => {
+const ArrowButton = ({ className = '', children, onClick, visible }: ArrowButtonProps) => {
   const visibility = visible
     ? 'visible opacity-100 scale-100 button *:cursor-pointer'
     : 'not-visible opacity-0 scale-50'
 
   const { elementRef } = useCarouselContext()
-  const baseRef = useRef<HTMLDivElement>(null)
-  const combinedRef = useCombinedRef(ref, baseRef)
 
   const handleClick = () => {
     onClick()
@@ -108,20 +108,16 @@ const Arrow = ({ className = '', children, onClick, visible, ref, ...props }: Na
   }
 
   return (
-    <div
-      ref={combinedRef}
-      className={cn('absolute top-1/2 -translate-y-1/2 transition-all duration-200', visibility, className)}
-      {...props}
+    <button
+      className={cn(
+        'absolute top-1/2 -translate-y-1/2 transition-all duration-200 p-3 rounded-full bg-gray-60 border border-white/20 text-gray-20 shadow-black shadow-2xl bg-black/90 md:[&>svg]:size-10 [&>svg]:size-6 text-white/75 [&>svg]:scale-y-115',
+        visibility,
+        className
+      )}
+      onClick={handleClick}
+      disabled={!visible}
     >
-      <button
-        className={cn(
-          'p-2 rounded-full bg-gray-60 border border-white/25 text-gray-20 shadow-black shadow-2xl relative bg-black/85 backdrop-blur-xl md:*:size-10 *:size-6'
-        )}
-        onClick={handleClick}
-        disabled={!visible}
-      >
-        {children}
-      </button>
-    </div>
+      {children}
+    </button>
   )
 }

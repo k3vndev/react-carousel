@@ -1,12 +1,6 @@
-export type {
-  CarouselComponent,
-  CarouselProps
-} from './carousel'
-export type { CarouselItemComponent, CarouselItemProps } from './carousel-item'
-export type {
-  NavigationArrowsComponent,
-  NavigationArrowsProps
-} from './navigation-arrows'
-export type { NavigationDotsProps } from './navigation-points'
-export type { AutoScrollConfig } from './use-auto-scroll'
-export type { CarouselData, CarouselNavigator, UseCarouselHook, UseCarouselReturn } from './use-carousel'
+export * from './carousel'
+export * from './carousel-item'
+export * from './navigation-arrows'
+export * from './navigation-dots'
+export * from './use-auto-scroll'
+export * from './use-carousel'

@@ -4,9 +4,7 @@
 export interface NavigationDotsProps {
   className?: string
   ref?: React.RefObject<HTMLDivElement | null>
+  noAutoScrollAnimation?: boolean
 }
 
-/**
- * Dot-based navigation handler for `Carousel`.
- */
 export type NavigationDotsComponent = (props: NavigationDotsProps) => React.JSX.Element

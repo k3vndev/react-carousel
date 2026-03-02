@@ -3,3 +3,14 @@
 @utility button {
   @apply cursor-pointer transition hover:brightness-125 active:brightness-75 active:scale-90 select-none disabled:pointer-events-none disabled:opacity-80;
 }
+
+@keyframes navigation-dots-autoplay-progress {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    opacity: 0.1;
+    transform: scale(0.2);
+  }
+}
