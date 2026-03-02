@@ -1,18 +1,15 @@
 'use client'
 
-import { useContext, useEffect, useRef } from 'react'
-import { CarouselContext } from '../context'
+import { useEffect, useRef } from 'react'
+import type { CarouselContextType } from '../context'
 import { NAVIGATION_EVENT_NAME } from '../utils'
-import { useCarousel, useFreshRefs } from '.'
 import '../styles.css'
 import type { AutoScrollConfig } from '../types'
+import { useFreshRefs } from './use-fresh-refs'
 
-export const useAutoScroll = (config: boolean | AutoScrollConfig) => {
-  const { elementRef, itemsCount, selectedIndex } = useContext(CarouselContext)
-  const { carouselNavigator } = useCarousel()
+export const useAutoScroll = (config: boolean | AutoScrollConfig, context: CarouselContextType) => {
   const timeoutRef = useRef<number | null>(null)
-
-  const refs = useFreshRefs({ selectedIndex, carouselNavigator })
+  const refs = useFreshRefs(context)
 
   const defaultConfig = {
     slideCooldown: 2000,
@@ -30,21 +27,25 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig) => {
     }
   }
 
-  const startTimeout = (time: number) => {
+  const startTimeout = (initialTime: number) => {
     stopTimeout()
 
-    timeoutRef.current = window.setTimeout(() => {
-      const { selectedIndex, carouselNavigator } = refs.current
+    timeoutRef.current = setTimeout(() => {
+      const { selectedIndex, navigator, itemsCount } = refs.current
       const nextIndex = selectedIndex < itemsCount - 1 ? selectedIndex + 1 : 0
 
-      carouselNavigator.scrollToIndex(nextIndex)
-      startTimeout(time)
-    }, time)
+      console.log((navigator as any).tileWidth)
+
+      navigator.scrollToIndex(nextIndex)
+      startTimeout(defaultConfig.slideCooldown)
+    }, initialTime)
   }
 
   useEffect(() => {
     if (!configRef.current) return
+
     const { slideCooldown, slideRestartCooldown, preventStopOnInteraction } = configRef.current
+    const { elementRef } = refs.current
 
     startTimeout(slideCooldown)
     const restart = () => startTimeout(slideRestartCooldown)

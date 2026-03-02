@@ -1,4 +1,4 @@
-import type { AutoScrollConfig } from './use-navigation-automatic'
+import type { AutoScrollConfig } from './use-auto-scroll'
 
 /**
  * Public props for the `Carousel` component.

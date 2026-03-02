@@ -1,10 +1,10 @@
 'use client'
 
-import { useContext, useRef } from 'react'
-import { CarouselContext } from '../../context'
+import { useRef } from 'react'
 import { useCarousel, useCombinedRef } from '../../hooks'
 import { emitNavigationEvent } from '../../utils'
 import '../../styles.css'
+import { useCarouselContext } from '../../context'
 import type { NavigationDotsComponent, NavigationDotsProps } from '../../types/navigation-points'
 import { cn } from '../../utils/cn'
 
@@ -14,7 +14,7 @@ import { cn } from '../../utils/cn'
  * @see NavigationDotsComponent
  */
 export const NavigationDots: NavigationDotsComponent = ({ className, ref }: NavigationDotsProps) => {
-  const { itemsCount, selectedIndex } = useContext(CarouselContext)
+  const { itemsCount, selectedIndex, visibleItems } = useCarouselContext()
   const baseWrapperRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useCombinedRef(ref, baseWrapperRef)
 
@@ -25,9 +25,10 @@ export const NavigationDots: NavigationDotsComponent = ({ className, ref }: Navi
       ref={wrapperRef}
       className={cn('absolute left-1/2 -translate-x-1/2 -bottom-10 flex gap-6', className)}
     >
-      {itemsArray.map((_, i) => (
-        <Point key={i} index={i} isSelected={selectedIndex === i} />
-      ))}
+      {itemsArray.map((_, i) => {
+        const isSelected = selectedIndex === i || (i >= selectedIndex && i < selectedIndex + visibleItems)
+        return <DotButton key={i} index={i} isSelected={isSelected} />
+      })}
     </div>
   )
 }
@@ -39,13 +40,13 @@ interface PointProps {
 }
 
 /**
- * A single navigation point (dot) used by `NavigationPoints`.
+ * A single navigation dot used by `NavigationDots`.
  *
  * Automatically handles carousel navigation when clicked.
  */
-const Point = ({ index, isSelected }: PointProps) => {
+const DotButton = ({ index, isSelected }: PointProps) => {
   const { carouselNavigator } = useCarousel()
-  const { elementRef } = useContext(CarouselContext)
+  const { elementRef } = useCarouselContext()
 
   const handleClick = () => {
     carouselNavigator.scrollToIndex(index)
@@ -54,10 +55,14 @@ const Point = ({ index, isSelected }: PointProps) => {
 
   const selectedStyle = isSelected
     ? 'active bg-white/90 scale-120'
-    : 'not-active button bg-white/25 hover:bg-white/40'
+    : 'not-active bg-white/25 hover:bg-white/40'
 
   return (
-    <button onClick={handleClick} className={cn(`relative size-4 rounded-full transition ${selectedStyle}`)}>
+    <button
+      onClick={handleClick}
+      className={cn('button relative size-4 rounded-full transition', selectedStyle)}
+      draggable={false}
+    >
       <div className='absolute left-1/2 top-1/2 -translate-1/2 size-[200%] bg-transparent' />
     </button>
   )

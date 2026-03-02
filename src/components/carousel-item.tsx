@@ -1,7 +1,7 @@
 'use client'
 
-import { useContext, useRef } from 'react'
-import { CarouselContext } from '../context'
+import { useRef } from 'react'
+import { useCarouselContext } from '../context'
 import { useCombinedRef } from '../hooks'
 import type { CarouselItemComponent } from '../types'
 import '../styles.css'
@@ -13,7 +13,7 @@ import { cn } from '../utils/cn'
  * @see CarouselItemComponent
  */
 export const CarouselItem: CarouselItemComponent = ({ children, className = '', ...props }) => {
-  const { tileProps } = useContext(CarouselContext)
+  const { tileProps } = useCarouselContext()
 
   const localRef = useRef<HTMLDivElement>(null)
   const combinedRef = useCombinedRef(props.ref, localRef)

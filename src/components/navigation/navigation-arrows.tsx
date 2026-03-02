@@ -1,7 +1,7 @@
 'use client'
 
-import { useContext, useEffect, useRef, useState } from 'react'
-import { CarouselContext } from '../../context'
+import { useEffect, useRef, useState } from 'react'
+import { useCarouselContext } from '../../context'
 import { useCarousel, useCombinedRef } from '../../hooks'
 import { ChevronIcon } from '../../icons'
 import type { NavigationArrowsComponent, NavigationArrowsProps } from '../../types'
@@ -15,7 +15,7 @@ import { cn } from '../../utils/cn'
  * @see NavigationArrowsComponent
  */
 export const NavigationArrows: NavigationArrowsComponent = ({ className }: NavigationArrowsProps) => {
-  const { elementRef, gap, tileWidth, visibleItems } = useContext(CarouselContext)
+  const { elementRef, gap, tileWidth, visibleItems } = useCarouselContext()
   const [buttonVisible, setButtonVisible] = useState({ left: false, right: false })
   const MIN_DIST_FROM_BORDER = 32
   const initialScroll = useRef(true)
@@ -98,7 +98,7 @@ const Arrow = ({ className = '', children, onClick, visible, ref, ...props }: Na
     ? 'visible opacity-100 scale-100 button *:cursor-pointer'
     : 'not-visible opacity-0 scale-50'
 
-  const { elementRef } = useContext(CarouselContext)
+  const { elementRef } = useCarouselContext()
   const baseRef = useRef<HTMLDivElement>(null)
   const combinedRef = useCombinedRef(ref, baseRef)
 

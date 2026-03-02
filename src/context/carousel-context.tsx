@@ -1,6 +1,7 @@
-import { createContext } from 'react'
+import { createContext, useContext } from 'react'
+import type { CarouselNavigator } from '../types/use-carousel'
 
-interface CarouselContextType {
+export interface CarouselContextType {
   tileProps: {
     className: string
     style: React.CSSProperties
@@ -11,6 +12,7 @@ interface CarouselContextType {
   tileWidth: number
   itemsCount: number
   selectedIndex: number
+  navigator: CarouselNavigator
 }
 
 export const CarouselContext = createContext<CarouselContextType>({
@@ -20,5 +22,12 @@ export const CarouselContext = createContext<CarouselContextType>({
   visibleItems: 0,
   tileWidth: 0,
   itemsCount: 0,
-  selectedIndex: 0
+  selectedIndex: 0,
+  navigator: {
+    scrollLeft: () => {},
+    scrollRight: () => {},
+    scrollToIndex: () => {}
+  }
 })
+
+export const useCarouselContext = () => useContext(CarouselContext)

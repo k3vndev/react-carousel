@@ -8,5 +8,5 @@ export type {
   NavigationArrowsProps
 } from './navigation-arrows'
 export type { NavigationDotsProps } from './navigation-points'
+export type { AutoScrollConfig } from './use-auto-scroll'
 export type { CarouselData, CarouselNavigator, UseCarouselHook, UseCarouselReturn } from './use-carousel'
-export type { AutoScrollConfig } from './use-navigation-automatic'
