@@ -1,7 +1,7 @@
 /**
- * Public props for `NavigationAutomatic`.
+ * Configuration options for the `useAutoScroll` hook.
  */
-export interface NavigationAutomaticProps {
+export interface AutoScrollConfig {
   /**
    * Time (in milliseconds) between each automatic slide.
    *
@@ -23,8 +23,3 @@ export interface NavigationAutomaticProps {
    */
   preventStopOnInteraction?: boolean
 }
-
-/**
- * Automatic navigation handler for `Carousel` (autoplay behavior).
- */
-export type NavigationAutomaticComponent = (props: NavigationAutomaticProps) => null

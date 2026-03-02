@@ -1,24 +1,20 @@
 'use client'
 
 import { useContext, useEffect, useRef, useState } from 'react'
-import { twMerge } from 'tailwind-merge'
-import { CarouselContext } from '../context'
-import { useCarousel, useCombinedRef } from '../hooks'
-import { ChevronIcon } from '../icons'
-import type { NavigationArrowsComponent, NavigationArrowsProps, ReusableComponent } from '../types'
-import { emitNavigationEvent } from '../utils'
-import '../styles.css'
+import { CarouselContext } from '../../context'
+import { useCarousel, useCombinedRef } from '../../hooks'
+import { ChevronIcon } from '../../icons'
+import type { NavigationArrowsComponent, NavigationArrowsProps } from '../../types'
+import { emitNavigationEvent } from '../../utils'
+import '../../styles.css'
+import { cn } from '../../utils/cn'
 
 /**
  * Previous/next arrow navigation for `Carousel`.
  *
  * @see NavigationArrowsComponent
  */
-export const NavigationArrows: NavigationArrowsComponent = ({
-  className,
-  style,
-  ref
-}: NavigationArrowsProps) => {
+export const NavigationArrows: NavigationArrowsComponent = ({ className }: NavigationArrowsProps) => {
   const { elementRef, gap, tileWidth, visibleItems } = useContext(CarouselContext)
   const [buttonVisible, setButtonVisible] = useState({ left: false, right: false })
   const MIN_DIST_FROM_BORDER = 32
@@ -59,29 +55,25 @@ export const NavigationArrows: NavigationArrowsComponent = ({
     return () => elementRef.current?.removeEventListener('scroll', handleULScroll)
   }, [visibleItems, tileWidth])
 
-  const baseLeftRef = useRef<HTMLDivElement>(null)
-  const baseRightRef = useRef<HTMLDivElement>(null)
-  const leftRef = useCombinedRef(ref?.left, baseLeftRef)
-  const rightRef = useCombinedRef(ref?.right, baseRightRef)
+  const leftRef = useRef<HTMLDivElement>(null)
+  const rightRef = useRef<HTMLDivElement>(null)
 
   return (
     <>
       <Arrow
-        ref={leftRef as any}
-        className={`left-0 -translate-x-1/2 ${className?.both ?? ''} ${className?.left ?? ''}`}
+        ref={leftRef}
+        className={cn('left-0 -translate-x-1/2', className)}
         onClick={carouselNavigator.scrollLeft}
         visible={buttonVisible.left}
-        style={{ ...style?.left, ...style?.both }}
       >
         <ChevronIcon className='text-white/50 rotate-180' />
       </Arrow>
 
       <Arrow
-        ref={rightRef as any}
-        className={`right-0 translate-x-1/2 ${className?.both ?? ''} ${className?.right ?? ''}`}
+        ref={rightRef}
+        className={cn('right-0 translate-x-1/2', className)}
         onClick={carouselNavigator.scrollRight}
         visible={buttonVisible.right}
-        style={{ ...style?.right, ...style?.both }}
       >
         <ChevronIcon className='text-white/50' />
       </Arrow>
@@ -89,7 +81,8 @@ export const NavigationArrows: NavigationArrowsComponent = ({
   )
 }
 
-interface NavigationButtonsProps extends ReusableComponent {
+interface NavigationButtonsProps {
+  className?: string
   children: React.ReactNode
   onClick: () => void
   visible?: boolean
@@ -117,18 +110,13 @@ const Arrow = ({ className = '', children, onClick, visible, ref, ...props }: Na
   return (
     <div
       ref={combinedRef}
-      className={twMerge(`
-        absolute top-1/2 -translate-y-1/2 transition-all duration-200 
-        ${visibility} ${className}
-      `)}
+      className={cn('absolute top-1/2 -translate-y-1/2 transition-all duration-200', visibility, className)}
       {...props}
     >
       <button
-        className={twMerge(`
-          p-2 rounded-full bg-gray-60 border border-white/25 text-gray-20
-          shadow-black shadow-2xl relative bg-black/85 
-          backdrop-blur-xl md:*:size-10 *:size-6
-        `)}
+        className={cn(
+          'p-2 rounded-full bg-gray-60 border border-white/25 text-gray-20 shadow-black shadow-2xl relative bg-black/85 backdrop-blur-xl md:*:size-10 *:size-6'
+        )}
         onClick={handleClick}
         disabled={!visible}
       >

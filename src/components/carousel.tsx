@@ -1,11 +1,12 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { twMerge } from 'tailwind-merge'
-import { CarouselContext } from './context'
-import { useCombinedRef } from './hooks'
-import type { CarouselComponent } from './types'
-import './styles.css'
+import { CarouselContext } from '../context'
+import { useCombinedRef } from '../hooks'
+import type { CarouselComponent } from '../types'
+import '../styles.css'
+import { useAutoScroll } from '../hooks/use-auto-scroll'
+import { cn } from '../utils/cn'
 
 /**
  * Horizontal scrollable carousel component.
@@ -19,15 +20,14 @@ export const Carousel: CarouselComponent = ({
   visibleItems = 1,
   gap = 0,
   className,
-  style,
+  autoScroll = false,
   ref
 }) => {
   // Refs
   const baseWrapperRef = useRef<HTMLElement>(null)
-  const baseScrollRef = useRef<HTMLDivElement>(null)
+  const wrapperRef = useCombinedRef(ref, baseWrapperRef)
 
-  const wrapperRef = useCombinedRef(ref?.wrapper, baseWrapperRef)
-  const scrollRef = useCombinedRef(ref?.scrollZone, baseScrollRef)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   // State
   const [tileWidth, setTileWidth] = useState<number>(-1)
@@ -37,12 +37,14 @@ export const Carousel: CarouselComponent = ({
 
   // Tile width calculation
   const refreshWidth = useCallback(() => {
-    const el = baseScrollRef.current
+    const el = scrollRef.current
     if (!el) return
     const totalGap = gap * (visibleItems - 1)
     const width = (el.offsetWidth - totalGap) / visibleItems
     setTileWidth(width)
   }, [visibleItems, ...extraDependencies])
+
+  useAutoScroll(autoScroll)
 
   useEffect(refreshWidth, [visibleItems, ...extraDependencies])
   useEffect(() => {
@@ -52,7 +54,7 @@ export const Carousel: CarouselComponent = ({
 
   // Scroll index tracking
   useEffect(() => {
-    const el = baseScrollRef.current
+    const el = scrollRef.current
     if (!el) return
     const handleScroll = () => setSelectedIndex(Math.round(el.scrollLeft / tileWidth))
     el.addEventListener('scroll', handleScroll)
@@ -70,7 +72,7 @@ export const Carousel: CarouselComponent = ({
     <CarouselContext.Provider
       value={{
         tileProps,
-        elementRef: baseScrollRef,
+        elementRef: scrollRef,
         gap,
         tileWidth,
         visibleItems,
@@ -78,22 +80,13 @@ export const Carousel: CarouselComponent = ({
         selectedIndex
       }}
     >
-      <section
-        className={twMerge(`relative w-full ${className?.wrapper ?? ''}`)}
-        style={style?.wrapper}
-        ref={wrapperRef}
-      >
+      <section className={cn('relative w-full ', className)} ref={wrapperRef}>
         <div
           ref={scrollRef}
-          className={twMerge(`
-            flex overflow-x-scroll max-w-full w-full h-full
-            snap-x snap-mandatory rounded-2xl [&::-webkit-scrollbar]:hidden
-            ${className?.scrollZone ?? ''}
-          `)}
+          className='scroll-zone flex overflow-x-scroll max-w-full w-full h-full snap-x snap-mandatory rounded-2xl [&::-webkit-scrollbar]:hidden'
           style={{
             contain: 'layout inline-size',
             gap: `${gap}px`,
-            ...style?.scrollZone,
 
             // Hide scrollbar for IE, Edge and Firefox. Chromium browsers handled via Tailwind class above.
             msOverflowStyle: 'none',

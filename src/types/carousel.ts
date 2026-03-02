@@ -1,32 +1,4 @@
-/**
- * Class name slots for the `Carousel` root structure.
- */
-export interface CarouselClassName {
-  /** Additional CSS/Tailwind class names for the outer wrapper element (`section`). */
-  wrapper?: string
-  /** Additional CSS/Tailwind class names for the scrollable inner element (`div`). */
-  scrollZone?: string
-}
-
-/**
- * Inline style slots for the `Carousel` root structure.
- */
-export interface CarouselStyle {
-  /** Inline styles for the outer wrapper element (`section`). */
-  wrapper?: React.CSSProperties
-  /** Inline styles for the scrollable inner element (`div`). */
-  scrollZone?: React.CSSProperties
-}
-
-/**
- * Optional refs exposed by `Carousel`.
- */
-export interface CarouselRef {
-  /** Optional ref for the outer wrapper element (`section`). */
-  wrapper?: React.Ref<HTMLElement>
-  /** Optional ref for the scrollable inner element (`div`). */
-  scrollZone?: React.Ref<HTMLDivElement>
-}
+import type { AutoScrollConfig } from './use-navigation-automatic'
 
 /**
  * Public props for the `Carousel` component.
@@ -53,25 +25,27 @@ export interface CarouselProps {
    */
   gap?: number
 
-  /** Child `CarouselItem` elements (or custom tile nodes). */
+  /** Child `CarouselItem` elements. */
   children?: React.ReactNode
 
   /**
    * Navigation component(s) rendered inside the carousel wrapper.
    *
-   * Examples: `<NavigationPoints />`, `<NavigationArrows />`,
-   * `<NavigationAutomatic />`, or any custom navigation UI.
+   * Examples: `<NavigationPoints />`, `<NavigationArrows />`, or any custom navigation UI.
    */
   navigationHandler?: React.ReactNode
 
-  /** Class name slots for wrapper and scroll zone. */
-  className?: CarouselClassName
+  className?: string
 
-  /** Inline style slots for wrapper and scroll zone. */
-  style?: CarouselStyle
+  ref?: React.Ref<HTMLElement>
 
-  /** Optional refs to access wrapper and scroll zone DOM nodes. */
-  ref?: CarouselRef
+  /**
+   * Configuration for automatic scrolling behavior.
+   * Enable by setting to `true` or provide a config object for custom settings.
+   *
+   * @default false
+   * */
+  autoScroll?: boolean | AutoScrollConfig
 }
 
 /**

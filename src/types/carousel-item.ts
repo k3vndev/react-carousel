@@ -1,13 +1,9 @@
-import type { ReusableComponent } from './reusable-component'
-
 /**
  * Public props for the `CarouselItem` component.
  */
-export interface CarouselItemProps extends ReusableComponent {
-  /** The content to be displayed inside the carousel item. */
+export interface CarouselItemProps {
   children?: React.ReactNode
-
-  /** Optional ref for the carousel item element. */
+  className?: string
   ref?: React.Ref<HTMLDivElement>
 }
 
