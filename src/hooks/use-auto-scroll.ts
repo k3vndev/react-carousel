@@ -15,15 +15,18 @@ import { useFreshRefs } from './use-fresh-refs'
  */
 export const useAutoScroll = (config: boolean | AutoScrollConfig, context: CarouselContextType) => {
   const timeoutRef = useRef<number | null>(null)
-  const refs = useFreshRefs(context)
 
   const configInitialValue = config === false ? null : config === true ? {} : config
   const configRef = useRef(configInitialValue ? { ...defaultConfig, ...configInitialValue } : null)
 
   const [waitingTime, setWaitingTime] = useState<number | null>(null)
+  const pointerEnteredRef = useRef(false)
+  const pointerFocusingRef = useRef(false)
+
+  const refs = useFreshRefs<CarouselContextType>({ ...context, autoplayWaitingTime: waitingTime })
 
   // Automatically stops auto-scrolling when the configuration is disabled
-  const stopTimeout = () => {
+  const clearScrollTimeout = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
       timeoutRef.current = null
@@ -32,8 +35,12 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
   }
 
   // Starts the auto-scroll timeout with the given initial time
-  const startTimeout = (initialTime: number) => {
-    stopTimeout()
+  const startScrollTimeout = (initialTime: number) => {
+    clearScrollTimeout()
+
+    if (pointerFocusingRef.current) {
+      return
+    }
 
     setWaitingTime(initialTime)
     timeoutRef.current = setTimeout(() => {
@@ -46,44 +53,96 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
       })()
 
       navigator.scrollToIndex(nextIndex)
-      startTimeout(defaultConfig.slideInterval)
+      startScrollTimeout(defaultConfig.slideInterval)
     }, initialTime)
   }
 
+  // Manages auto-scrolling behavior based on the provided configuration
   useEffect(() => {
     if (!config || !configRef.current) {
-      stopTimeout()
+      clearScrollTimeout()
       return
     }
 
     const { slideInterval, slideResetDelay, stopOnInteraction } = configRef.current
     const { elementRef } = refs.current
-
-    startTimeout(slideInterval)
-    const restart = () => startTimeout(slideResetDelay)
-
-    // Do not attach interaction listeners if `stopOnInteraction` is false or element ref is not available
     if (!elementRef.current || !stopOnInteraction) return
 
     const el = elementRef.current
-    el.addEventListener('pointerenter', stopTimeout)
-    el.addEventListener('pointerleave', restart)
-    el.addEventListener('touchstart', stopTimeout)
-    el.addEventListener('touchend', restart)
-    el.addEventListener('touchcancel', restart)
-    el.addEventListener('scroll', restart)
-    el.addEventListener(NAVIGATION_EVENT_NAME, restart)
+
+    // -- Main timeouts --
+    startScrollTimeout(slideInterval)
+    const restartScrollTimeout = () => startScrollTimeout(slideResetDelay)
+
+    // -- Pointer interaction timeouts --
+    let pointerInteractionTimeout: number | null = null
+
+    const startPointerInteractionTimeout = () => {
+      clearPointerInteractionTimeout()
+
+      pointerInteractionTimeout = setTimeout(() => {
+        clearPointerInteractionTimeout()
+
+        // If the pointer is still within the carousel after the timeout, we keep auto-scrolling paused until they leave
+        if (pointerEnteredRef.current) {
+          pointerFocusingRef.current = true
+          clearScrollTimeout()
+        }
+      }, POINTER_MOVE_MIN_TIME)
+    }
+    const clearPointerInteractionTimeout = () => {
+      if (pointerInteractionTimeout) {
+        clearTimeout(pointerInteractionTimeout)
+        pointerInteractionTimeout = null
+      }
+    }
+
+    // -- Pointer interactions event handlers --
+    const handlePointerEnter = () => {
+      pointerEnteredRef.current = true
+      startPointerInteractionTimeout()
+    }
+
+    const handlePointerMove = () => {
+      if (pointerEnteredRef.current) {
+        startPointerInteractionTimeout()
+      }
+    }
+
+    const handlePointerLeave = () => {
+      pointerEnteredRef.current = false
+      pointerFocusingRef.current = false
+
+      clearPointerInteractionTimeout()
+
+      if (!refs.current.autoplayWaitingTime) {
+        restartScrollTimeout()
+      }
+    }
+
+    // Set up event listeners
+    el.addEventListener('pointerenter', handlePointerEnter)
+    el.addEventListener('pointermove', handlePointerMove)
+    el.addEventListener('pointerleave', handlePointerLeave)
+    el.addEventListener('touchstart', clearScrollTimeout)
+    el.addEventListener('touchend', restartScrollTimeout)
+    el.addEventListener('touchcancel', restartScrollTimeout)
+    el.addEventListener('scroll', restartScrollTimeout)
+    el.addEventListener(NAVIGATION_EVENT_NAME, restartScrollTimeout)
 
     return () => {
       // Clean up listeners and timeouts on unmount or config change
-      stopTimeout()
-      el.removeEventListener('pointerenter', stopTimeout)
-      el.removeEventListener('pointerleave', restart)
-      el.removeEventListener('touchstart', stopTimeout)
-      el.removeEventListener('touchend', restart)
-      el.removeEventListener('touchcancel', restart)
-      el.removeEventListener('scroll', restart)
-      el.removeEventListener(NAVIGATION_EVENT_NAME, restart)
+      clearScrollTimeout()
+      clearPointerInteractionTimeout()
+
+      el.removeEventListener('pointerenter', handlePointerEnter)
+      el.removeEventListener('pointermove', handlePointerMove)
+      el.removeEventListener('pointerleave', handlePointerLeave)
+      el.removeEventListener('touchstart', clearScrollTimeout)
+      el.removeEventListener('touchend', restartScrollTimeout)
+      el.removeEventListener('touchcancel', restartScrollTimeout)
+      el.removeEventListener('scroll', restartScrollTimeout)
+      el.removeEventListener(NAVIGATION_EVENT_NAME, restartScrollTimeout)
     }
   }, [config])
 
@@ -95,3 +154,5 @@ const defaultConfig = {
   slideResetDelay: 4000,
   stopOnInteraction: true
 } satisfies AutoScrollConfig
+
+const POINTER_MOVE_MIN_TIME = 100

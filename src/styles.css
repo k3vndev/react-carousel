@@ -5,13 +5,9 @@
 }
 
 @keyframes navigation-dots-autoplay-progress {
-  from {
-    transform: scale(1);
-    opacity: 1;
-  }
   to {
-    opacity: 0.1;
-    transform: scale(0.25);
-    background: white;
+    opacity: var(--auto-scroll-opacity);
+    transform: scale(var(--auto-scroll-scale));
+    background-color: var(--auto-scroll-color);
   }
 }
