@@ -5,9 +5,9 @@ import type { AutoScrollConfig } from './use-auto-scroll'
  */
 export interface CarouselProps {
   /**
-   * Total number of tiles rendered in the carousel.
+   * Total number of tiles rendered in the carousel. Optional, but recommended for better performance and reliability.
    *
-   * If not provided, it will be calculated based on the number of `CarouselItem` children.
+   * If not provided, the carousel will attempt to count the number of child elements ONLY on the initial render. This means that if the number of children changes dynamically after the first render, the carousel may not update correctly.
    */
   itemsCount?: number
 

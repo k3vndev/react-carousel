@@ -19,6 +19,8 @@ export const useCarouselInternal = ({
   const [tileWidth, setTileWidth] = useState<number>(-1)
   const [selectedIndex, setSelectedIndex] = useState(0)
 
+  const initialItemsCount = useRef(-1)
+
   // Tile width calculation
   useEffect(() => {
     const refreshWidth = () => {
@@ -115,21 +117,60 @@ export const useCarouselInternal = ({
     style: { width: widthForTile, maxWidth: widthForTile, minWidth: widthForTile }
   }
 
-  const calculatedItemsCount = useMemo(() => {
+  /** Warns with a prefixed message */
+  const warnMessage = (message: string) => console.warn(`[Carousel] ${message}`)
+
+  const computedItemsCount = useMemo(() => {
+    // If itemsCount is not provided, attempt to count children on initial render
+    if (initialItemsCount.current < 0) {
+      initialItemsCount.current = 0
+
+      if (itemsCount === undefined) {
+        if (!children) {
+          warnMessage(
+            'itemsCount is not provided and no children found. Please ensure that the carousel has child elements or provide the itemsCount prop explicitly.'
+          )
+          return 0
+        }
+
+        const isArray = Array.isArray(children)
+
+        if (isArray) {
+          if (children.length <= 0) {
+            warnMessage(
+              'No items found in children. Please ensure that the carousel has child elements or provide the itemsCount prop explicitly.'
+            )
+            return 0
+          }
+
+          initialItemsCount.current = children.length
+          return children.length
+        }
+        // Return 1 if there's a single child element
+        initialItemsCount.current = 1
+        return 1
+      }
+    }
+
+    // If itemsCount is provided, try to use it directly
     if (itemsCount !== undefined) {
-      if (itemsCount < 0 || !Number.isInteger(itemsCount)) {
-        console.warn(
-          `[Carousel] Invalid itemsCount value (${itemsCount}). It should be a non-negative integer. Defaulting to 0.`
+      if (itemsCount <= 0) {
+        warnMessage(
+          'itemsCount is provided but is not a positive number. Please provide a valid itemsCount value greater than 0.'
         )
         return 0
       }
       return itemsCount
     }
 
-    if (children && Array.isArray(children)) {
-      return children.length
+    // If itemsCount is not provided and children were counted on initial render, use that value
+    if (!initialItemsCount.current) {
+      warnMessage(
+        'Unable to determine items count. Please ensure that the carousel has child elements or provide the itemsCount prop explicitly.'
+      )
+      return 0
     }
-    return children ? 1 : 0
+    return initialItemsCount.current
   }, [children, itemsCount])
 
   const contextValue: CarouselContextType = useMemo(
@@ -139,12 +180,12 @@ export const useCarouselInternal = ({
       gap,
       visibleItems,
       tileWidth,
-      itemsCount: calculatedItemsCount,
+      itemsCount: computedItemsCount,
       selectedIndex,
       navigator,
       autoScroll
     }),
-    [tileProps, gap, visibleItems, tileWidth, calculatedItemsCount, selectedIndex, navigator, autoScroll]
+    [tileProps, gap, visibleItems, tileWidth, computedItemsCount, selectedIndex, navigator, autoScroll]
   )
 
   return {
