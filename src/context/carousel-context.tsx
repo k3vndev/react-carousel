@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react'
+import type { AutoScrollConfig } from '../types'
 import type { CarouselNavigator } from '../types/use-carousel'
 
 export interface CarouselContextType {
@@ -14,6 +15,7 @@ export interface CarouselContextType {
   selectedIndex: number
   navigator: CarouselNavigator
   autoplayWaitingTime?: number | null
+  autoScroll: boolean | AutoScrollConfig
 }
 
 export const CarouselContext = createContext<CarouselContextType>({
@@ -29,7 +31,8 @@ export const CarouselContext = createContext<CarouselContextType>({
     scrollRight: () => {},
     scrollToIndex: () => {}
   },
-  autoplayWaitingTime: null
+  autoplayWaitingTime: null,
+  autoScroll: {}
 })
 
 export const useCarouselContext = () => useContext(CarouselContext)

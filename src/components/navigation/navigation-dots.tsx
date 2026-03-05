@@ -71,7 +71,9 @@ const DotButton = ({ index, isActive, noAutoScrollAnimation }: PointProps) => {
     emitNavigationEvent(elementRef.current)
   }
 
-  const activeStyle = isActive ? 'active bg-white/90 scale-120' : 'not-active bg-white/25 hover:bg-white/40'
+  const activeStyle = isActive
+    ? 'active bg-white/90 scale-120 duration-100'
+    : 'not-active bg-white/25 hover:bg-white/40 duration-600'
 
   const style: React.CSSProperties =
     isActive && autoplayWaitingTime && !noAutoScrollAnimation
@@ -85,7 +87,7 @@ const DotButton = ({ index, isActive, noAutoScrollAnimation }: PointProps) => {
     <button
       onClick={handleClick}
       className={cn(
-        "dot button relative size-4 rounded-full transition duration-100 after:content-[''] after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:size-[200%] after:bg-transparent",
+        "dot button relative size-4 rounded-full transition after:content-[''] after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:size-[200%] after:bg-transparent",
         activeStyle
       )}
       draggable={false}

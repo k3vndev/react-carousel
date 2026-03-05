@@ -7,6 +7,12 @@ import '../styles.css'
 import type { AutoScrollConfig } from '../types'
 import { useFreshRefs } from './use-fresh-refs'
 
+/**
+ * A hook that manages the auto-scrolling behavior of the Carousel component.
+ * @param config The auto-scroll configuration, which can be a boolean or an object with specific settings.
+ * @param context The Carousel context that provides necessary information and navigation methods for the Carousel component.
+ * @returns The remaining time (in milliseconds) before the next auto-scroll action occurs, or null if auto-scrolling is disabled.
+ */
 export const useAutoScroll = (config: boolean | AutoScrollConfig, context: CarouselContextType) => {
   const timeoutRef = useRef<number | null>(null)
   const refs = useFreshRefs(context)
@@ -16,6 +22,7 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
 
   const [waitingTime, setWaitingTime] = useState<number | null>(null)
 
+  // Automatically stops auto-scrolling when the configuration is disabled
   const stopTimeout = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
@@ -24,6 +31,7 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
     setWaitingTime(null)
   }
 
+  // Starts the auto-scroll timeout with the given initial time
   const startTimeout = (initialTime: number) => {
     stopTimeout()
 
@@ -43,7 +51,10 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
   }
 
   useEffect(() => {
-    if (!configRef.current) return
+    if (!config || !configRef.current) {
+      stopTimeout()
+      return
+    }
 
     const { slideInterval, slideResetDelay, stopOnInteraction } = configRef.current
     const { elementRef } = refs.current
@@ -51,28 +62,30 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
     startTimeout(slideInterval)
     const restart = () => startTimeout(slideResetDelay)
 
+    // Do not attach interaction listeners if `stopOnInteraction` is false or element ref is not available
     if (!elementRef.current || !stopOnInteraction) return
 
-    const element = elementRef.current
-    element.addEventListener('pointerenter', stopTimeout)
-    element.addEventListener('pointerleave', restart)
-    element.addEventListener('touchstart', stopTimeout)
-    element.addEventListener('touchend', restart)
-    element.addEventListener('touchcancel', restart)
-    element.addEventListener('scroll', restart)
-    element.addEventListener(NAVIGATION_EVENT_NAME, restart)
+    const el = elementRef.current
+    el.addEventListener('pointerenter', stopTimeout)
+    el.addEventListener('pointerleave', restart)
+    el.addEventListener('touchstart', stopTimeout)
+    el.addEventListener('touchend', restart)
+    el.addEventListener('touchcancel', restart)
+    el.addEventListener('scroll', restart)
+    el.addEventListener(NAVIGATION_EVENT_NAME, restart)
 
     return () => {
+      // Clean up listeners and timeouts on unmount or config change
       stopTimeout()
-      element.removeEventListener('pointerenter', stopTimeout)
-      element.removeEventListener('pointerleave', restart)
-      element.removeEventListener('touchstart', stopTimeout)
-      element.removeEventListener('touchend', restart)
-      element.removeEventListener('touchcancel', restart)
-      element.removeEventListener('scroll', restart)
-      element.removeEventListener(NAVIGATION_EVENT_NAME, restart)
+      el.removeEventListener('pointerenter', stopTimeout)
+      el.removeEventListener('pointerleave', restart)
+      el.removeEventListener('touchstart', stopTimeout)
+      el.removeEventListener('touchend', restart)
+      el.removeEventListener('touchcancel', restart)
+      el.removeEventListener('scroll', restart)
+      el.removeEventListener(NAVIGATION_EVENT_NAME, restart)
     }
-  }, [])
+  }, [config])
 
   return waitingTime
 }

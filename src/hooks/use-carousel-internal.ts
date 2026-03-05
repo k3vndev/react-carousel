@@ -3,7 +3,14 @@ import type { CarouselContextType } from '../context'
 import type { CarouselNavigator, CarouselProps } from '../types'
 import { useCombinedRef } from './use-combined-ref'
 
-export const useCarouselInternal = ({ itemsCount, visibleItems = 1, gap = 0, ref }: CarouselProps) => {
+export const useCarouselInternal = ({
+  itemsCount,
+  visibleItems = 1,
+  gap = 0,
+  autoScroll = false,
+  ref,
+  children
+}: CarouselProps) => {
   const baseWrapperRef = useRef<HTMLElement>(null)
   const wrapperRef = useCombinedRef(ref, baseWrapperRef)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -29,7 +36,7 @@ export const useCarouselInternal = ({ itemsCount, visibleItems = 1, gap = 0, ref
 
     window.addEventListener('resize', refreshWidth)
     return () => window.removeEventListener('resize', refreshWidth)
-  }, [gap, visibleItems])
+  }, [gap, visibleItems, autoScroll])
 
   // Scroll index tracking
   useEffect(() => {
@@ -108,6 +115,23 @@ export const useCarouselInternal = ({ itemsCount, visibleItems = 1, gap = 0, ref
     style: { width: widthForTile, maxWidth: widthForTile, minWidth: widthForTile }
   }
 
+  const calculatedItemsCount = useMemo(() => {
+    if (itemsCount !== undefined) {
+      if (itemsCount < 0 || !Number.isInteger(itemsCount)) {
+        console.warn(
+          `[Carousel] Invalid itemsCount value (${itemsCount}). It should be a non-negative integer. Defaulting to 0.`
+        )
+        return 0
+      }
+      return itemsCount
+    }
+
+    if (children && Array.isArray(children)) {
+      return children.length
+    }
+    return children ? 1 : 0
+  }, [children, itemsCount])
+
   const contextValue: CarouselContextType = useMemo(
     () => ({
       tileProps,
@@ -115,11 +139,12 @@ export const useCarouselInternal = ({ itemsCount, visibleItems = 1, gap = 0, ref
       gap,
       visibleItems,
       tileWidth,
-      itemsCount,
+      itemsCount: calculatedItemsCount,
       selectedIndex,
-      navigator
+      navigator,
+      autoScroll
     }),
-    [tileProps, gap, visibleItems, tileWidth, itemsCount, selectedIndex, navigator]
+    [tileProps, gap, visibleItems, tileWidth, calculatedItemsCount, selectedIndex, navigator, autoScroll]
   )
 
   return {

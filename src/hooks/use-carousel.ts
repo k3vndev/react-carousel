@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useCarouselContext } from '../context'
 import type { CarouselData, UseCarouselHook, UseCarouselReturn } from '../types'
 
@@ -9,15 +10,16 @@ import type { CarouselData, UseCarouselHook, UseCarouselReturn } from '../types'
 export const useCarousel: UseCarouselHook = (): UseCarouselReturn => {
   const ctx = useCarouselContext()
 
-  const { navigator } = ctx
+  const data: CarouselData = useMemo(
+    () => ({
+      gap: ctx.gap,
+      itemsCount: ctx.itemsCount,
+      selectedIndex: ctx.selectedIndex,
+      tileWidth: ctx.tileWidth,
+      visibleItems: ctx.visibleItems
+    }),
+    [ctx.gap, ctx.itemsCount, ctx.selectedIndex, ctx.tileWidth, ctx.visibleItems]
+  )
 
-  const data: CarouselData = {
-    gap: ctx.gap,
-    itemsCount: ctx.itemsCount,
-    selectedIndex: ctx.selectedIndex,
-    tileWidth: ctx.tileWidth,
-    visibleItems: ctx.visibleItems
-  }
-
-  return { carouselNavigator: navigator, carouselData: data }
+  return { carouselNavigator: ctx.navigator, carouselData: data }
 }

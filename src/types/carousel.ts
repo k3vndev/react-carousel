@@ -7,9 +7,9 @@ export interface CarouselProps {
   /**
    * Total number of tiles rendered in the carousel.
    *
-   * This value is used by navigation handlers and index calculations.
+   * If not provided, it will be calculated based on the number of `CarouselItem` children.
    */
-  itemsCount: number
+  itemsCount?: number
 
   /**
    * Number of items visible in the viewport at once.
