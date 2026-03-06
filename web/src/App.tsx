@@ -1,5 +1,5 @@
 import { Footer } from './components/Footer'
-import { Hero } from './components/Hero'
+import { Hero } from './components/hero/Hero'
 import { Sections } from './components/Sections'
 
 export default function App() {

@@ -21,7 +21,7 @@ export const Sections = () => {
       >
         <TextZone />
 
-        <Carousel
+        {/* <Carousel
           itemsCount={catImages.length}
           className='md:w-150 w-max-pad'
           visibleItems={2}
@@ -38,7 +38,7 @@ export const Sections = () => {
               />
             </CarouselItem>
           ))}
-        </Carousel>
+        </Carousel> */}
       </main>
 
       {/* Squares background */}

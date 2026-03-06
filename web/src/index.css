@@ -4,7 +4,7 @@
 @source "../../src";
 
 @utility text-gradient-yellow {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-yellow-600;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#FFBB] to-yellow-[#FF9E01];
 }
 
 @utility w-max-pad {

@@ -1,0 +1,29 @@
+import { Carousel, CarouselItem, NavigationDots } from '@k3vndev/react-carousel'
+import { useMemo } from 'react'
+import { getCatImages } from '../../utils/getCatImages'
+
+export const HeroCarousel = () => {
+  const catImages = useMemo(() => getCatImages('hero', 7), [])
+
+  return (
+    <Carousel
+      className='md:w-2xl w-full px-4'
+      navigationHandler={
+        <NavigationDots
+          className='[&>.dot.active]:bg-yellow-400'
+          autoScrollAnimationValues={{
+            color: 'oklch(85.2% 0.199 91.936)'
+          }}
+        />
+      }
+      autoScroll
+      infiniteScroll
+    >
+      {catImages.map((src, i) => (
+        <CarouselItem key={i} className='h-96'>
+          <img src={src} alt={`Cat ${i + 1}`} className='w-full h-full object-cover' draggable={false} />
+        </CarouselItem>
+      ))}
+    </Carousel>
+  )
+}
