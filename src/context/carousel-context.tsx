@@ -16,6 +16,7 @@ export interface CarouselContextType {
   navigator: CarouselNavigator
   autoplayWaitingTime?: number | null
   autoScroll: boolean | AutoScrollConfig
+  infiniteScroll: boolean
 }
 
 export const CarouselContext = createContext<CarouselContextType>({
@@ -32,7 +33,8 @@ export const CarouselContext = createContext<CarouselContextType>({
     scrollToIndex: () => {}
   },
   autoplayWaitingTime: null,
-  autoScroll: {}
+  autoScroll: {},
+  infiniteScroll: false
 })
 
 export const useCarouselContext = () => useContext(CarouselContext)

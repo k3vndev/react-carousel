@@ -46,6 +46,13 @@ export interface CarouselProps {
    * @default false
    * */
   autoScroll?: boolean | AutoScrollConfig
+
+  /**
+   * Enables infinite scrolling behavior when true. When enabled, the carousel will seamlessly loop back to the beginning after reaching the end, and vice versa.
+   *
+   * @default false
+   */
+  infiniteScroll?: boolean
 }
 
 export type CarouselComponent = (props: CarouselProps) => React.JSX.Element

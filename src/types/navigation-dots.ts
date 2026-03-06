@@ -9,7 +9,7 @@ export interface NavigationDotsProps {
   noAutoScrollAnimation?: boolean
 
   /** Values for the auto-scroll animation when enabled (ignored if `noAutoScrollAnimation` is true) */
-  autoScrollAnimationValues: {
+  autoScrollAnimationValues?: {
     /**
      * The scale value for the auto-scroll animation (0 to 1).
      *

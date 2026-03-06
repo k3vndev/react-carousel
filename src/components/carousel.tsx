@@ -3,6 +3,7 @@
 import { CarouselContext } from '../context'
 import type { CarouselComponent } from '../types'
 import '../styles.css'
+import { useState } from 'react'
 import { useAutoScroll } from '../hooks/use-auto-scroll'
 import { useCarouselInternal } from '../hooks/use-carousel-internal'
 import { cn } from '../utils/cn'
@@ -40,13 +41,13 @@ import { cn } from '../utils/cn'
  * ```
  */
 export const Carousel: CarouselComponent = props => {
-  const { context, refs } = useCarouselInternal(props)
+  const [children, setChildren] = useState(props.children)
+  const { context, refs } = useCarouselInternal({ ...props, setChildren })
   const autoplayWaitingTime = useAutoScroll(props.autoScroll ?? false, context)
-  const { className, children } = props
 
   return (
     <CarouselContext.Provider value={{ ...context, autoplayWaitingTime }}>
-      <section className={cn('relative w-full ', className)} ref={refs.wrapper} draggable={false}>
+      <section className={cn('relative w-full ', props.className)} ref={refs.wrapper} draggable={false}>
         <div
           ref={refs.scroll}
           className='scroll-zone flex overflow-x-scroll max-w-full w-full h-full snap-x snap-mandatory rounded-2xl [&::-webkit-scrollbar]:hidden'

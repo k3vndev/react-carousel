@@ -44,7 +44,14 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
 
     setWaitingTime(initialTime)
     timeoutRef.current = setTimeout(() => {
-      const { selectedIndex, navigator, itemsCount, visibleItems } = refs.current
+      const { selectedIndex, navigator, itemsCount, visibleItems, infiniteScroll } = refs.current
+
+      if (infiniteScroll) {
+        // In infinite mode, always move forward one tile to preserve loop continuity.
+        navigator.scrollRight(1)
+        startScrollTimeout(defaultConfig.slideInterval)
+        return
+      }
 
       const nextIndex: number = (() => {
         const maxIndex = itemsCount - visibleItems
