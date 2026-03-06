@@ -1,7 +1,7 @@
 'use client'
 
 import type React from 'react'
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useCarousel, useCombinedRef } from '../../hooks'
 import { emitNavigationEvent } from '../../utils'
 import '../../styles.css'
@@ -14,7 +14,7 @@ import { cn } from '../../utils/cn'
  *
  * @example
  * ```tsx
- * <NavigationDots className='[&>button.active]:bg-yellow-400' />
+ * <NavigationDots className='[&>.dot.active]:bg-yellow-400' />
  * ```
  *
  * @example The rendered HTML structure of the `NavigationDots` component will look like this:
@@ -31,7 +31,7 @@ export const NavigationDots: NavigationDotsComponent = ({
   noAutoScrollAnimation = false,
   autoScrollAnimationValues
 }: NavigationDotsProps) => {
-  const { itemsCount, selectedIndex, visibleItems } = useCarouselContext()
+  const { itemsCount } = useCarouselContext()
   const baseWrapperRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useCombinedRef(ref, baseWrapperRef)
 
@@ -43,13 +43,10 @@ export const NavigationDots: NavigationDotsComponent = ({
       className={cn('absolute left-1/2 -translate-x-1/2 -bottom-10 flex gap-6', className)}
     >
       {itemsArray.map((_, i) => {
-        const isActive = selectedIndex === i || (i >= selectedIndex && i < selectedIndex + visibleItems)
-
         return (
           <DotButton
             animationConfig={autoScrollAnimationValues}
             animationDisabled={noAutoScrollAnimation}
-            isActive={isActive}
             key={i}
             index={i}
           />
@@ -59,9 +56,8 @@ export const NavigationDots: NavigationDotsComponent = ({
   )
 }
 
-interface PointProps {
+interface DotProps {
   index: number
-  isActive: boolean
   ref?: React.RefObject<HTMLButtonElement | null>
   animationDisabled?: boolean
   animationConfig: NavigationDotsProps['autoScrollAnimationValues']
@@ -74,14 +70,43 @@ interface PointProps {
  */
 const DotButton = ({
   index,
-  isActive,
   animationDisabled: noAutoScrollAnimation,
   animationConfig: animationValues
-}: PointProps) => {
-  const { carouselNavigator } = useCarousel()
-  const { elementRef, autoplayWaitingTime } = useCarouselContext()
-
+}: DotProps) => {
   const animationAdd = 400 // Compensates for transition duration of the dot
+
+  const { carouselNavigator } = useCarousel()
+  const { elementRef, autoplayWaitingTime, selectedIndex, visibleItems, itemsCount } = useCarouselContext()
+
+  const isActiveInternal: boolean = useMemo(() => {
+    const i = index
+
+    if (visibleItems === 1) {
+      return selectedIndex === i
+    }
+
+    if (selectedIndex + visibleItems > itemsCount) {
+      const overflow = (selectedIndex + visibleItems) % itemsCount
+      return i >= selectedIndex || i < overflow
+    } else {
+      return i >= selectedIndex && i < selectedIndex + visibleItems
+    }
+  }, [index, selectedIndex, visibleItems, itemsCount])
+
+  const [isActive, setIsActive] = useState(isActiveInternal)
+  const previousSelectedIndexRef = useRef(selectedIndex)
+
+  // Set active state immediately when selectedIndex changes, but delay the deactivation to allow the animation to play
+  useEffect(() => {
+    if (previousSelectedIndexRef.current !== selectedIndex) {
+      setIsActive(false)
+      previousSelectedIndexRef.current = selectedIndex
+
+      requestAnimationFrame(() => {
+        setIsActive(isActiveInternal)
+      })
+    }
+  }, [isActiveInternal, selectedIndex])
 
   const handleClick = () => {
     carouselNavigator.scrollToIndex(index)
@@ -93,7 +118,7 @@ const DotButton = ({
     : 'not-active bg-white/25 hover:bg-white/40 duration-600'
 
   const style = useMemo(() => {
-    const { scale = 0.2, opacity = 0.05, color = 'white' } = animationValues ?? {}
+    const { scale = 0.25, opacity = 0.1, color = 'white' } = animationValues ?? {}
 
     const mainValues = {
       '--auto-scroll-scale': scale,

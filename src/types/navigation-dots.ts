@@ -13,13 +13,13 @@ export interface NavigationDotsProps {
     /**
      * The scale value for the auto-scroll animation (0 to 1).
      *
-     * @default 0.2
+     * @default 0.25
      */
     scale?: number
     /**
      * The opacity value for the auto-scroll animation (0 to 1).
      *
-     * @default 0.05
+     * @default 0.1
      */
     opacity?: number
     /**
