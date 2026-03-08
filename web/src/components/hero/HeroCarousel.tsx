@@ -7,7 +7,7 @@ export const HeroCarousel = () => {
 
   return (
     <Carousel
-      className='md:w-2xl w-full px-4'
+      className='md:w-3xl w-full px-8 animate-slide-in-b anim-blur-xl anim-opacity-0 anim-ease-out-back anim-delay-500 anim-rotate-5'
       navigationHandler={
         <NavigationDots
           className='[&>.dot.active]:bg-yellow-400'

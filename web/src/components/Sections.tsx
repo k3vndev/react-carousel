@@ -8,8 +8,7 @@ export const Sections = () => {
   return (
     <div
       className={`
-        w-screen min-h-screen bg-gradient-to-b 
-        from-gray-900 to-gray-950 relative z-20
+        w-screen min-h-screen bg-[#12151D] relative z-20
       `}
     >
       <main
@@ -49,7 +48,7 @@ export const Sections = () => {
         `}
         style={{
           backgroundImage: 'url(/squares.gif)',
-          backgroundSize: '150px'
+          backgroundSize: '300px'
         }}
       />
     </div>

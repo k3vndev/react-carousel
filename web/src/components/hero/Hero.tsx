@@ -1,12 +1,15 @@
 'use client'
 
+import { HeroBackground } from './HeroBackground'
 import { HeroCarousel } from './HeroCarousel'
 
 export const Hero = () => {
   const animSlideInL = 'animate-slide-in-l anim-blur-lg anim-opacity-0 anim-duration-1000 anim-ease-out-back'
 
   return (
-    <div className='flex flex-col min-h-screen w-full h-screen relative items-center justify-center lg:gap-28 sm:gap-20 gap-10 not-sm:-translate-y-13'>
+    <section className='flex flex-col min-h-screen w-full h-screen items-center justify-center lg:gap-28 sm:gap-20 gap-10 relative'>
+      <HeroBackground />
+
       <div className='flex flex-col sm:gap-8 gap-4 items-center sm:px-8 px-4'>
         <h1
           className={`py-2 xl:text-7xl lg:text-6xl md:text-5xl sm:text-3xl text-2xl font-bold text-gradient-yellow text-nowrap font-poppins ${animSlideInL}`}
@@ -22,6 +25,6 @@ export const Hero = () => {
       </div>
 
       <HeroCarousel />
-    </div>
+    </section>
   )
 }
