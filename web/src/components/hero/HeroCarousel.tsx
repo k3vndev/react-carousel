@@ -22,7 +22,12 @@ export const HeroCarousel = () => {
       >
         {catImages.map((src, i) => (
           <CarouselItem key={i} className='sm:h-96 h-64'>
-            <img src={src} alt={`Cat ${i + 1}`} className='w-full h-full object-cover' draggable={false} />
+            <img
+              src={src}
+              alt={`Carousel cat ${i + 1}`}
+              className='w-full h-full object-cover'
+              draggable={false}
+            />
           </CarouselItem>
         ))}
       </Carousel>
