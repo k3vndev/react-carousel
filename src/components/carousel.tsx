@@ -20,7 +20,7 @@ import { cn } from '../utils/cn'
  *   itemsCount={3}
  *   visibleItems={1}
  *   gap={16}
- *   className='max-w-xl'
+ *   className='w-xl'
  *   navigationHandler={<NavigationPoints />}
  * >
  *   <CarouselItem>Item 1</CarouselItem>
@@ -31,7 +31,7 @@ import { cn } from '../utils/cn'
  *
  * @example The rendered HTML structure of the `Carousel` component will look like this:
  * ```tsx
- * <section class="relative w-full">
+ * <section class="relative w-full max-w-2xl">
  *   <div class="scroll-zone">
  *     <!-- Carousel items will be rendered here -->
  *   </div>
@@ -47,7 +47,11 @@ export const Carousel: CarouselComponent = props => {
 
   return (
     <CarouselContext.Provider value={{ ...context, autoplayWaitingTime }}>
-      <section className={cn('relative w-full ', props.className)} ref={refs.wrapper} draggable={false}>
+      <section
+        className={cn('relative w-full max-w-2xl', props.className)}
+        ref={refs.wrapper}
+        draggable={false}
+      >
         <div
           ref={refs.scroll}
           className='scroll-zone flex overflow-x-scroll max-w-full w-full h-full snap-x snap-mandatory rounded-2xl [&::-webkit-scrollbar]:hidden'
