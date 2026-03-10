@@ -27,12 +27,7 @@ export const CodeSnippet = ({ codeStr, className, children }: Props) => {
   }
 
   return (
-    <div
-      className={cn(
-        'shadow-app-card rounded-xl overflow-clip border border-white/10 relative bg-black',
-        className
-      )}
-    >
+    <div className={cn('shadow-app-card rounded-xl border border-white/10 relative bg-black', className)}>
       {children}
 
       <SyntaxHighlighter
