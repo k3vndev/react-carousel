@@ -5,11 +5,11 @@
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "types": ["vite/client"],
+    "types": ["vite/client", "react-syntax-highlighter", "prismjs"],
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@k3vndev/react-carousel": ["../src/index.ts"]
+      "@k3vndev/react-carousel": ["../src/index.ts"] // Path alias for the library source code (dev and testing purposes)
     },
 
     /* Bundler mode */

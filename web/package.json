@@ -13,14 +13,17 @@
     "@k3vndev/tw-animations": "^0.3.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-syntax-highlighter": "^16.1.1",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
     "@tailwindcss/vite": "^4.1.14",
     "@types/node": "^24.6.0",
+    "@types/prismjs": "^1.26.6",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "@vitejs/plugin-react-swc": "^4.1.0",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
