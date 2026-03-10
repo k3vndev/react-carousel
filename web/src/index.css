@@ -7,6 +7,11 @@
   @apply bg-clip-text text-transparent bg-gradient-to-r from-[#FFBB01] to-[#FF9E01];
 }
 
+@theme {
+  --font-poppins: 'Poppins', sans-serif;
+  --shadow-app-card: 4px 4px 8px rgba(0, 0, 0, 0.25);
+}
+
 @utility w-max-pad {
   max-width: calc(100vw - 4rem);
   width: 100vw;

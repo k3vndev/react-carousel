@@ -1,9 +1,5 @@
 @import 'tailwindcss';
 
-@theme {
-  --font-poppins: 'Poppins', sans-serif;
-}
-
 @utility button {
   @apply cursor-pointer transition hover:brightness-125 active:brightness-75 active:scale-90 select-none disabled:pointer-events-none disabled:opacity-80;
 }

@@ -1,7 +1,4 @@
-interface Props {
-  style?: React.CSSProperties
-  className?: string
-}
+type Props = React.SVGProps<SVGSVGElement>
 
 export const CopyIcon = (props: Props) => (
   <svg

@@ -1,19 +1,20 @@
 import { useState } from 'react'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { CheckIcon, CopyIcon } from './icons'
 
 interface Props {
-  children: React.ReactNode
+  codeStr: string
 }
 
-export const CodeSnippet = ({ children }: Props) => {
+export const CodeSnippet = ({ codeStr }: Props) => {
   const [copied, setCopied] = useState(false)
 
   const handleClick = () => {
     setCopied(true)
 
-    const codeText = children?.toString()
-    if (codeText) {
-      navigator.clipboard.writeText(codeText)
+    if (codeStr) {
+      navigator.clipboard.writeText(codeStr)
     }
 
     setTimeout(() => {
@@ -22,16 +23,30 @@ export const CodeSnippet = ({ children }: Props) => {
   }
 
   return (
-    <article
-      className={`
-        sm:px-8 px-4 sm:py-4 py-3 rounded-lg bg-black/25 backdrop-blur-sm border border-white/5
-        text-gray-300 flex items-center sm:gap-8 gap-4 font-mono mt-8
-      `}
-    >
-      <span className='sm:text-lg text-xs'>{children}</span>
-      <button className='button' disabled={copied} onClick={handleClick}>
+    <div className='shadow-app-card rounded-xl overflow-clip border-2 border-white/5 relative'>
+      <SyntaxHighlighter
+        language='tsx'
+        style={oneDark}
+        codeTagProps={{ style: { background: 'transparent' } }}
+        customStyle={{
+          background: 'rgba(0, 0, 0, 0.75)',
+          fontSize: '1rem',
+          padding: '1rem',
+          margin: 0
+        }}
+        wrapLongLines
+      >
+        {codeStr}
+      </SyntaxHighlighter>
+
+      <button
+        className='button absolute top-4 right-4 text-white'
+        title={copied ? 'Copied!' : 'Copy to clipboard'}
+        disabled={copied}
+        onClick={handleClick}
+      >
         {copied ? <CheckIcon /> : <CopyIcon />}
       </button>
-    </article>
+    </div>
   )
 }

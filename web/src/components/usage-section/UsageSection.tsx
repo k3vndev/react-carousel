@@ -1,4 +1,4 @@
-import { CodeSnippet } from './CodeSnippet'
+import { CodeSnippet } from '../CodeSnippet'
 import { UsageCarousel } from './UsageCarousel'
 
 export const UsageSection = () => (
@@ -9,7 +9,7 @@ export const UsageSection = () => (
         <p className='text-white/90 text-3xl text-pretty font-light'>
           Build your own navigation, animations, and autoplay logic with ease.
         </p>
-        <CodeSnippet />
+        <CodeSnippet codeStr={codeSnippetContent} />
       </div>
 
       <UsageCarousel />
@@ -25,3 +25,21 @@ export const UsageSection = () => (
     />
   </section>
 )
+
+// biome-ignore format: <>
+const codeSnippetContent = 
+`<Carousel
+  itemsCount={catImages.length}
+  className='w-110'
+  navigationHandler={<NavigationArrows />}
+>
+  {catImages.map(src => (
+    <CarouselItem className='h-150 rounded-xl'>
+      <img
+        src={src}
+        className='object-cover size-full'
+        alt='A cat, probably angry'
+      />
+    </CarouselItem>
+  ))}
+</Carousel>`
