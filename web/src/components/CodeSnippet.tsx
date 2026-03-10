@@ -1,13 +1,17 @@
+import type React from 'react'
 import { useState } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { cn } from '../../../src/utils/cn'
 import { CheckIcon, CopyIcon } from './icons'
 
 interface Props {
   codeStr: string
+  className?: string
+  children?: React.ReactNode
 }
 
-export const CodeSnippet = ({ codeStr }: Props) => {
+export const CodeSnippet = ({ codeStr, className, children }: Props) => {
   const [copied, setCopied] = useState(false)
 
   const handleClick = () => {
@@ -23,13 +27,20 @@ export const CodeSnippet = ({ codeStr }: Props) => {
   }
 
   return (
-    <div className='shadow-app-card rounded-xl overflow-clip border-2 border-white/5 relative'>
+    <div
+      className={cn(
+        'shadow-app-card rounded-xl overflow-clip border border-white/10 relative bg-black',
+        className
+      )}
+    >
+      {children}
+
       <SyntaxHighlighter
         language='tsx'
         style={oneDark}
         codeTagProps={{ style: { background: 'transparent' } }}
         customStyle={{
-          background: 'rgba(0, 0, 0, 0.75)',
+          background: 'transparent',
           fontSize: '1rem',
           padding: '1rem',
           margin: 0

@@ -1,6 +1,4 @@
-import type { ReusableComponent } from '../types'
-
-export const ChevronIcon = (props: ReusableComponent) => (
+export const ChevronIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     width='24'
     height='24'
