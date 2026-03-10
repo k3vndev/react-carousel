@@ -114,8 +114,8 @@ const DotButton = ({
   }
 
   const conditionalClassName = isActive
-    ? 'active bg-white/90 scale-120 duration-100'
-    : 'not-active bg-white/25 hover:bg-white/40 duration-600'
+    ? 'active bg-white/90 scale-120 duration-150'
+    : 'not-active bg-white/25 hover:bg-white/40 duration-300'
 
   const style = useMemo(() => {
     const { scale = 0.25, opacity = 0.1, color = 'white' } = animationValues ?? {}

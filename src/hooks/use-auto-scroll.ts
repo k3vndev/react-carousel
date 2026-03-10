@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CarouselContextType } from '../context'
 import { NAVIGATION_EVENT_NAME } from '../utils'
 import '../styles.css'
@@ -17,7 +17,11 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
   const timeoutRef = useRef<number | null>(null)
 
   const configInitialValue = config === false ? null : config === true ? {} : config
-  const configRef = useRef(configInitialValue ? { ...defaultConfig, ...configInitialValue } : null)
+  const settings = useMemo(
+    () => (configInitialValue ? { ...defaultConfig, ...configInitialValue } : null),
+    [config]
+  )
+  const settingsRef = useFreshRefs(settings)
 
   const [waitingTime, setWaitingTime] = useState<number | null>(null)
   const pointerEnteredRef = useRef(false)
@@ -35,21 +39,24 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
   }
 
   // Starts the auto-scroll timeout with the given initial time
-  const startScrollTimeout = (initialTime: number) => {
+  const restartScrollTimeout = () => {
     clearScrollTimeout()
 
-    if (pointerFocusingRef.current) {
+    const settings = settingsRef.current
+    if (pointerFocusingRef.current || !settings) {
       return
     }
 
-    setWaitingTime(initialTime)
+    const { slideInterval } = settings
+
+    setWaitingTime(slideInterval)
     timeoutRef.current = setTimeout(() => {
       const { selectedIndex, navigator, itemsCount, visibleItems, infiniteScroll } = refs.current
 
       if (infiniteScroll) {
         // In infinite mode, always move forward one tile to preserve loop continuity.
         navigator.scrollRight(1)
-        startScrollTimeout(defaultConfig.slideInterval)
+        restartScrollTimeout()
         return
       }
 
@@ -60,26 +67,26 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
       })()
 
       navigator.scrollToIndex(nextIndex)
-      startScrollTimeout(defaultConfig.slideInterval)
-    }, initialTime)
+      restartScrollTimeout()
+    }, slideInterval)
   }
 
   // Manages auto-scrolling behavior based on the provided configuration
   useEffect(() => {
-    if (!config || !configRef.current) {
+    const settings = settingsRef.current
+    if (!config || !settings) {
       clearScrollTimeout()
       return
     }
 
-    const { slideInterval, slideResetDelay, stopOnInteraction } = configRef.current
+    const { stopOnInteraction } = settings
     const { elementRef } = refs.current
     if (!elementRef.current || !stopOnInteraction) return
 
     const el = elementRef.current
 
     // -- Main timeouts --
-    startScrollTimeout(slideInterval)
-    const restartScrollTimeout = () => startScrollTimeout(slideResetDelay)
+    restartScrollTimeout()
 
     // -- Pointer interaction timeouts --
     let pointerInteractionTimeout: number | null = null
@@ -127,14 +134,21 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
       }
     }
 
+    const handleScroll = () => {
+      clearScrollTimeout()
+    }
+
+    const handleScrollEnd = () => {
+      restartScrollTimeout()
+    }
+
     // Set up event listeners
     el.addEventListener('pointerenter', handlePointerEnter)
+    el.addEventListener('pointerdown', restartScrollTimeout)
     el.addEventListener('pointermove', handlePointerMove)
     el.addEventListener('pointerleave', handlePointerLeave)
-    el.addEventListener('touchstart', clearScrollTimeout)
-    el.addEventListener('touchend', restartScrollTimeout)
-    el.addEventListener('touchcancel', restartScrollTimeout)
-    el.addEventListener('scroll', restartScrollTimeout)
+    el.addEventListener('scroll', handleScroll)
+    el.addEventListener('scrollend', handleScrollEnd)
     el.addEventListener(NAVIGATION_EVENT_NAME, restartScrollTimeout)
 
     return () => {
@@ -143,12 +157,11 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
       clearPointerInteractionTimeout()
 
       el.removeEventListener('pointerenter', handlePointerEnter)
+      el.removeEventListener('pointerdown', restartScrollTimeout)
       el.removeEventListener('pointermove', handlePointerMove)
       el.removeEventListener('pointerleave', handlePointerLeave)
-      el.removeEventListener('touchstart', clearScrollTimeout)
-      el.removeEventListener('touchend', restartScrollTimeout)
-      el.removeEventListener('touchcancel', restartScrollTimeout)
-      el.removeEventListener('scroll', restartScrollTimeout)
+      el.removeEventListener('scroll', handleScroll)
+      el.removeEventListener('scrollend', handleScrollEnd)
       el.removeEventListener(NAVIGATION_EVENT_NAME, restartScrollTimeout)
     }
   }, [config])
@@ -158,7 +171,6 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
 
 const defaultConfig = {
   slideInterval: 2000,
-  slideResetDelay: 4000,
   stopOnInteraction: true
 } satisfies AutoScrollConfig
 
