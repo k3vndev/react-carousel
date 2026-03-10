@@ -37,7 +37,7 @@ export const CodeSnippet = ({ codeStr, className, children }: Props) => {
         customStyle={{
           background: 'transparent',
           fontSize: '1rem',
-          padding: '1rem',
+          padding: '1rem 3rem 1rem 1rem',
           margin: 0
         }}
         wrapLongLines

@@ -11,7 +11,8 @@ export const UsageSection = () => (
         <SectionText className='text-white/90'>
           Build your own navigation, animations, and autoplay logic with ease.
         </SectionText>
-        <CodeSnippet codeStr={codeSnippetContent} />
+
+        <CodeSnippet className='mt-4' codeStr={codeSnippetContent} />
       </div>
 
       <UsageCarousel />
@@ -30,10 +31,15 @@ export const UsageSection = () => (
 
 // biome-ignore format: <>
 const codeSnippetContent = 
-`<Carousel
+`import { Carousel, CarouselItem, NavigationArrows } from '@k3vndev/react-carousel'
+
+<Carousel
   itemsCount={catImages.length}
   className='w-110'
   navigationHandler={<NavigationArrows />}
+  visibleItems={2}
+  gap={16}
+  infiniteScroll
 >
   {catImages.map(src => (
     <CarouselItem className='h-150 rounded-xl'>

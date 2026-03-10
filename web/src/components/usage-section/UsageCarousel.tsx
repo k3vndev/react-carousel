@@ -2,7 +2,7 @@ import { Carousel, CarouselItem, NavigationArrows } from '@k3vndev/react-carouse
 import { getCatImages } from '../../utils/getCatImages'
 
 export const UsageCarousel = () => {
-  const catImages = getCatImages('sections', 6)
+  const catImages = getCatImages('usage-section', 6)
 
   return (
     <Carousel
