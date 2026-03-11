@@ -7,5 +7,5 @@ interface Props {
 }
 
 export const SectionHeading = ({ children, className }: Props) => (
-  <h2 className={cn('sm:text-6xl text-5xl font-bold', className)}>{children}</h2>
+  <h2 className={cn('sm:text-6xl text-5xl font-bold mb-2', className)}>{children}</h2>
 )
