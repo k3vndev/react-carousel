@@ -1,8 +1,9 @@
 import { Carousel, CarouselItem, NavigationArrows } from '@k3vndev/react-carousel'
+import { useMemo } from 'react'
 import { getCatImages } from '../../utils/getCatImages'
 
-export const UsageCarousel = () => {
-  const catImages = getCatImages('usage-section', 6)
+export const UsageSectionCarousel = () => {
+  const catImages = useMemo(() => getCatImages('usage-section', 6), [])
 
   return (
     <Carousel
@@ -12,9 +13,9 @@ export const UsageCarousel = () => {
       navigationHandler={<NavigationArrows className='bg-black' />}
       infiniteScroll
     >
-      {catImages.map((src, i) => (
+      {catImages.map(({ src, alt }, i) => (
         <CarouselItem key={i} className='max-h-none xl:h-140 h-100 overflow-hidden'>
-          <img src={src} alt={`Cat ${i}`} className='w-full h-full object-cover' draggable={false} />
+          <img src={src} alt={alt} className='w-full h-full object-cover' draggable={false} />
         </CarouselItem>
       ))}
     </Carousel>
