@@ -7,5 +7,5 @@ interface Props {
 }
 
 export const SectionText = ({ children, className }: Props) => (
-  <p className={cn('text-3xl text-pretty font-light', className)}>{children}</p>
+  <p className={cn('sm:text-3xl text-2xl text-pretty font-light', className)}>{children}</p>
 )

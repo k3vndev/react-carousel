@@ -2,6 +2,7 @@ import { CodeSnippet } from '../CodeSnippet'
 import { SectionHeading } from '../SectionHeading'
 import { SectionText } from '../SectionText'
 import { UsageCarousel } from './UsageCarousel'
+import { UsageSectionBackground } from './UsageSectionBackground'
 
 export const UsageSection = () => (
   <section className='w-screen min-h-screen flex items-center bg-[#12151D] relative z-20'>
@@ -18,14 +19,7 @@ export const UsageSection = () => (
       <UsageCarousel />
     </main>
 
-    {/* Squares background */}
-    <div
-      className='absolute size-full left-0 top-0 opacity-20 -z-10 pointer-events-none animate-fade-in anim-delay-100'
-      style={{
-        backgroundImage: 'url(/squares.gif)',
-        backgroundSize: '300px'
-      }}
-    />
+    <UsageSectionBackground />
   </section>
 )
 

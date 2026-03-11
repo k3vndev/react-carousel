@@ -3,6 +3,7 @@ import { SectionHeading } from '../SectionHeading'
 import { SectionText } from '../SectionText'
 import { UsageCarousel } from '../usage-section/UsageCarousel'
 import { InstallDependencyCode } from './InstallDependencyCode'
+import { InstallSectionBackground } from './InstallSectionBackground'
 
 export const InstallSection = () => (
   <section className='w-screen min-h-screen flex items-center bg-[#12151D] relative z-20'>
@@ -22,8 +23,7 @@ export const InstallSection = () => (
       <UsageCarousel />
     </main>
 
-    {/* Background */}
-    <div className='absolute size-full left-0 top-0 -z-10 pointer-events-none animate-fade-in anim-delay-100 bg-linear-to-b from-[#060910] to-[#0C1017]' />
+    <InstallSectionBackground />
   </section>
 )
 
