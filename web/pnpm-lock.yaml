@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@k3vndev/react-carousel':
-        specifier: ^1.0.0
-        version: 1.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwindcss@4.1.14)
+        specifier: ^1.0.2
+        version: 1.0.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwindcss@4.1.14)
       '@k3vndev/tw-animations':
         specifier: ^0.3.0
         version: 0.3.0(tailwind@4.0.0)
@@ -321,11 +321,11 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@k3vndev/react-carousel@1.0.0':
-    resolution: {integrity: sha512-LoQoo91sQx8FJPd3BE3zIuzDzyzw4DBQqIpa4ZvDF8cS80Aj4ZDmGEutnq00E1cg1Sr/h7rDZumdnMwuY6wOwg==}
+  '@k3vndev/react-carousel@1.0.2':
+    resolution: {integrity: sha512-FT0fEJsLxpTSXbbrDHlSVrnEZJHapzwvUaDulgefUnjHUdjIk4rQkXLXoXW8J3Fb5wffSLhdGENedp0ZGxUapg==}
     peerDependencies:
-      react: '>=18'
-      react-dom: '>=18'
+      react: '>=19'
+      react-dom: '>=19'
       tailwindcss: '>=4.0.0'
 
   '@k3vndev/tw-animations@0.3.0':
@@ -2438,7 +2438,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@k3vndev/react-carousel@1.0.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwindcss@4.1.14)':
+  '@k3vndev/react-carousel@1.0.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tailwindcss@4.1.14)':
     dependencies:
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)

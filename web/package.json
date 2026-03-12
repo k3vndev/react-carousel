@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@k3vndev/react-carousel": "^1.0.0",
+    "@k3vndev/react-carousel": "^1.0.2",
     "@k3vndev/tw-animations": "^0.3.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
