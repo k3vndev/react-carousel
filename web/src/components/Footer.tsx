@@ -1,33 +1,37 @@
+import { PACKAGE_NAME } from '../consts'
+import { cn } from '../utils/cn'
 import { GitHubIcon } from './icons'
 
 export const Footer = () => (
-  <footer
-    className={`
-      w-screen sm:pt-5 py-8 pb-8 bg-gray-90 font-mono
-      flex items-center justify-center cursor-default gap-x-5 gap-y-2
-      not-sm:flex-col bg-gray-900/60
-    `}
-  >
-    <a
-      className='group flex gap-2 items-center'
-      href='https://github.com/k3vndev/react-carousel'
-      target='_blank'
-      rel='noopener'
-    >
-      <GitHubIcon className='size-5 opacity-70' />
-      <span className='group-hover:underline text-gray-200'>GitHub</span>
-    </a>
+  <footer className='w-screen py-12 bg-gray-90 flex flex-col items-center justify-center cursor-default gap-3 not-sm:flex-col bg-linear-to-b from-[#060910] to-[#0b101a] font-poppins'>
+    <div className='text-[#A2BAE3] flex items-center gap-1 sm:text-xl'>
+      <a
+        className='group flex gap-2 items-center'
+        href='https://github.com/k3vndev/react-carousel'
+        target='_blank'
+        rel='noopener'
+      >
+        <GitHubIcon className='size-5 opacity-70' />
+        <span className='group-hover:underline text-gray-200'>GitHub</span>
+      </a>
 
-    <span className='not-sm:hidden text-gray-500'>—</span>
+      <span className='not-sm:hidden text-gray-500'>—</span>
+      {PACKAGE_NAME}
+    </div>
 
-    <span className='text-gray-400 text-center text-pretty'>
-      Most cat images came from <Link>pixabay.com</Link> and <Link>unsplash.com</Link>
-    </span>
+    <small className='text-[#6D8ABD] text-center sm:text-lg text-sm text-pretty font-poppins'>
+      Most cat images came from <BaseLink>pixabay.com</BaseLink> and <BaseLink>unsplash.com</BaseLink>
+    </small>
   </footer>
 )
 
-const Link = ({ children }: { children: string }) => (
-  <a className='hover:underline text-gray-300' href={`https://${children}`} target='_blank' rel='noopener'>
+interface BaseLinkProps {
+  children: string
+  className?: string
+}
+
+const BaseLink = ({ children, className }: BaseLinkProps) => (
+  <a className={cn('underline', className)} href={`https://${children}`} target='_blank' rel='noopener'>
     {children}
   </a>
 )

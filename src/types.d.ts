@@ -1,6 +1,15 @@
-export type ReusableComponent = {
-  /** Additional CSS/Tailwind class names to apply */
-  className?: string
-  /** Additional inline styles to apply */
-  style?: React.CSSProperties
-}
+export type {
+  AutoScrollConfig,
+  CarouselComponent,
+  CarouselData,
+  CarouselItemComponent,
+  CarouselItemProps,
+  CarouselNavigator,
+  CarouselProps,
+  NavigationArrowsComponent,
+  NavigationArrowsProps,
+  NavigationDotsComponent,
+  NavigationDotsProps,
+  UseCarouselHook,
+  UseCarouselReturn
+} from './types/index'

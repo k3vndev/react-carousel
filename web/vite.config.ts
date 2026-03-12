@@ -1,8 +1,23 @@
+import path from 'node:path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss() as any]
+export default defineConfig(({ mode }) => {
+  const useLocalLibrarySource = mode === 'development'
+
+  return {
+    resolve: {
+      alias: useLocalLibrarySource
+        ? [
+            {
+              find: '@k3vndev/react-carousel',
+              replacement: path.resolve(__dirname, '../src/index.ts')
+            }
+          ]
+        : []
+    },
+    plugins: [react(), tailwindcss()]
+  }
 })

@@ -1,22 +1,15 @@
-import { Hero } from './components/Hero'
-import { Sections } from './components/Sections'
-
-import '../node_modules/@k3vndev/react-carousel/dist/index.css'
 import { Footer } from './components/Footer'
+import { Hero } from './components/hero/Hero'
+import { InstallSection } from './components/install-section/InstallSection'
+import { UsageSection } from './components/usage-section/UsageSection'
 
-function App() {
+export default function App() {
   return (
-    <main
-      className={`
-        w-screen min-h-screen h-full flex flex-col
-        items-center justify-center
-      `}
-    >
+    <main className='w-screen min-h-screen h-full flex flex-col items-center justify-center'>
       <Hero />
-      <Sections />
+      <UsageSection />
+      <InstallSection />
       <Footer />
     </main>
   )
 }
-
-export default App

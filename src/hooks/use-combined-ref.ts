@@ -1,4 +1,4 @@
-export const useCombinedRef = <T>(forwarded?: React.Ref<T>, local?: React.RefObject<T>) => {
+export const useCombinedRef = <T>(forwarded?: React.Ref<T>, local?: React.RefObject<T | null>) => {
   return (node: T | null) => {
     if (local) local.current = node
     if (!forwarded) return

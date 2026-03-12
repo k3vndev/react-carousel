@@ -1,10 +1,13 @@
-@import "tailwindcss";
-@import "@k3vndev/tw-animations";
-
+@import 'tailwindcss';
 @source "../node_modules/@k3vndev/react-carousel";
 
 @utility text-gradient-yellow {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 to-yellow-600;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#FFBB01] to-[#FF9E01];
+}
+
+@theme {
+  --font-poppins: 'Poppins', sans-serif;
+  --shadow-app-card: 4px 4px 8px rgba(0, 0, 0, 0.25);
 }
 
 @utility w-max-pad {
