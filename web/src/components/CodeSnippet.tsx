@@ -2,7 +2,7 @@ import type React from 'react'
 import { useState } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { cn } from '../../../src/utils/cn'
+import { cn } from '../utils/cn'
 import { CheckIcon, CopyIcon } from './icons'
 
 interface Props {

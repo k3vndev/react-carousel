@@ -7,8 +7,8 @@
   "style": "dist/index.css",
   "types": "dist/index.d.ts",
   "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18",
+    "react": ">=19",
+    "react-dom": ">=19",
     "tailwindcss": ">=4.0.0"
   },
   "exports": {
@@ -29,7 +29,7 @@
   "keywords": [],
   "author": "@k3vndev",
   "license": "ISC",
-  "packageManager": "pnpm@10.13.1",
+  "packageManager": "pnpm@10.32.1",
   "devDependencies": {
     "@biomejs/biome": "2.2.6",
     "@types/react": "^19.2.2",

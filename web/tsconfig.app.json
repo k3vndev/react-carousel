@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@k3vndev/react-carousel": ["../src/index.ts"] // Path alias for the library source code (dev and testing purposes)
+      // "@k3vndev/react-carousel": ["../src/index.ts"] // Path alias for the library source code (dev and testing purposes)
     },
 
     /* Bundler mode */

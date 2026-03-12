@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { PACKAGE_NAME } from '../../../../src/consts'
+import { PACKAGE_NAME } from '../../consts'
 import { CodeSnippet } from '../CodeSnippet'
 import { DropdownSelect } from '../DropdownSelect'
 

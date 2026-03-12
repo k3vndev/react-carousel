@@ -1,4 +1,4 @@
-import { PACKAGE_NAME } from '../../../src/consts'
+import { PACKAGE_NAME } from '../consts'
 import { cn } from '../utils/cn'
 import { GitHubIcon } from './icons'
 

@@ -1,7 +1,5 @@
 @import 'tailwindcss';
-@import '@k3vndev/tw-animations';
-
-@source "../../src";
+@source "../node_modules/@k3vndev/react-carousel";
 
 @utility text-gradient-yellow {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-[#FFBB01] to-[#FF9E01];
