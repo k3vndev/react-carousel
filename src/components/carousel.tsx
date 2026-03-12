@@ -1,11 +1,10 @@
 'use client'
 
-import { CarouselContext } from '../context'
-import type { CarouselComponent } from '../types'
-import '../styles.css'
 import { useState } from 'react'
+import { CarouselContext } from '../context'
 import { useAutoScroll } from '../hooks/use-auto-scroll'
 import { useCarouselInternal } from '../hooks/use-carousel-internal'
+import type { CarouselComponent } from '../types'
 import { cn } from '../utils/cn'
 
 /**

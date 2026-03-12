@@ -4,7 +4,6 @@
   "description": "A cool carousel system for React and TailwindCSS. Build your own navigation, animations, and autoplay logic with ease.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
-  "style": "dist/index.css",
   "types": "dist/index.d.ts",
   "peerDependencies": {
     "react": ">=19",
@@ -16,15 +15,13 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
-    },
-    "./styles": "./dist/index.css"
+    }
   },
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts"
   },
   "files": [
-    "dist/**/*",
-    "dist/index.css"
+    "dist/**/*"
   ],
   "keywords": [],
   "author": "@k3vndev",

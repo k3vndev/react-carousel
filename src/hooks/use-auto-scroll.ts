@@ -2,9 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CarouselContextType } from '../context'
-import { NAVIGATION_EVENT_NAME } from '../utils'
-import '../styles.css'
 import type { AutoScrollConfig } from '../types'
+import { NAVIGATION_EVENT_NAME } from '../utils'
 import { useFreshRefs } from './use-fresh-refs'
 
 /**

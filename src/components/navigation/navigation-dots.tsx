@@ -2,11 +2,11 @@
 
 import type React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useCarousel, useCombinedRef } from '../../hooks'
-import { emitNavigationEvent } from '../../utils'
-import '../../styles.css'
+import { BUTTON_CLASS_NAMES } from '../../consts'
 import { useCarouselContext } from '../../context'
+import { useCarousel, useCombinedRef } from '../../hooks'
 import type { NavigationDotsComponent, NavigationDotsProps } from '../../types/navigation-dots'
+import { emitNavigationEvent } from '../../utils'
 import { cn } from '../../utils/cn'
 
 /**
@@ -74,6 +74,7 @@ const DotButton = ({
   animationConfig: animationValues
 }: DotProps) => {
   const animationAdd = 400 // Compensates for transition duration of the dot
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   const { carouselNavigator } = useCarousel()
   const { elementRef, autoplayWaitingTime, selectedIndex, visibleItems, itemsCount } = useCarouselContext()
@@ -117,35 +118,45 @@ const DotButton = ({
     ? 'active bg-white/90 scale-120 duration-150'
     : 'not-active bg-white/25 hover:bg-white/40 duration-300'
 
-  const style = useMemo(() => {
+  useEffect(() => {
+    const element = buttonRef.current
+    if (!element || !isActive || noAutoScrollAnimation || !autoplayWaitingTime) {
+      return
+    }
+
     const { scale = 0.25, opacity = 0.1, color = 'white' } = animationValues ?? {}
 
-    const mainValues = {
-      '--auto-scroll-scale': scale,
-      '--auto-scroll-opacity': opacity,
-      '--auto-scroll-color': color
-    }
+    const progressAnimation = element.animate(
+      [
+        {
+          opacity: 1
+        },
+        {
+          opacity,
+          transform: `scale(${scale})`,
+          backgroundColor: color
+        }
+      ],
+      {
+        duration: autoplayWaitingTime + animationAdd,
+        easing: 'linear',
+        fill: 'both'
+      }
+    )
 
-    if (!isActive || noAutoScrollAnimation || !autoplayWaitingTime) {
-      return mainValues
-    }
-
-    return {
-      animation: 'navigation-dots-autoplay-progress linear both',
-      animationDuration: `${autoplayWaitingTime + animationAdd}ms`,
-      ...mainValues
-    }
+    return () => progressAnimation.cancel()
   }, [isActive, autoplayWaitingTime, noAutoScrollAnimation, animationValues])
 
   return (
     <button
+      ref={buttonRef}
       onClick={handleClick}
       className={cn(
-        "dot button relative size-4 rounded-full transition after:content-[''] after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:size-[200%] after:bg-transparent",
+        "dot relative size-4 rounded-full transition after:content-[''] after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:size-[200%] after:bg-transparent",
+        BUTTON_CLASS_NAMES,
         conditionalClassName
       )}
       draggable={false}
-      style={style as React.CSSProperties}
     />
   )
 }

@@ -4,7 +4,6 @@ import { useRef } from 'react'
 import { useCarouselContext } from '../context'
 import { useCombinedRef } from '../hooks'
 import type { CarouselItemComponent } from '../types'
-import '../styles.css'
 import { cn } from '../utils/cn'
 
 /**

@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { BUTTON_CLASS_NAMES } from '../../consts'
 import { useCarouselContext } from '../../context'
 import { useCarousel } from '../../hooks'
 import { ChevronIcon } from '../../icons'
 import type { NavigationArrowsComponent, NavigationArrowsProps } from '../../types'
 import { emitNavigationEvent } from '../../utils'
-import '../../styles.css'
 import { cn } from '../../utils/cn'
 
 /**
@@ -97,7 +97,7 @@ interface ArrowButtonProps {
 
 const ArrowButton = ({ className = '', children, onClick, visible }: ArrowButtonProps) => {
   const visibility = visible
-    ? 'visible opacity-100 scale-100 button *:cursor-pointer'
+    ? `visible opacity-100 scale-100 ${BUTTON_CLASS_NAMES} *:cursor-pointer`
     : 'not-visible opacity-0 scale-50'
 
   const { elementRef } = useCarouselContext()
