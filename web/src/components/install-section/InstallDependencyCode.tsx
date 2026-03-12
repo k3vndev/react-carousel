@@ -1,17 +1,16 @@
 import { useMemo, useState } from 'react'
+import { PACKAGE_NAME } from '../../../../src/consts'
 import { CodeSnippet } from '../CodeSnippet'
 import { DropdownSelect } from '../DropdownSelect'
 
 const PACKAGE_MANAGERS = ['pnpm', 'npm', 'yarn', 'bun'] as const
 type PackageManager = (typeof PACKAGE_MANAGERS)[number]
 
-const dependencyName = '@k3vndev/react-carousel'
-
 const installCommandByManager: Record<PackageManager, string> = {
-  pnpm: `pnpm add ${dependencyName}`,
-  npm: `npm install ${dependencyName}`,
-  yarn: `yarn add ${dependencyName}`,
-  bun: `bun add ${dependencyName}`
+  pnpm: `pnpm add ${PACKAGE_NAME}`,
+  npm: `npm install ${PACKAGE_NAME}`,
+  yarn: `yarn add ${PACKAGE_NAME}`,
+  bun: `bun add ${PACKAGE_NAME}`
 }
 
 export const InstallDependencyCode = () => {

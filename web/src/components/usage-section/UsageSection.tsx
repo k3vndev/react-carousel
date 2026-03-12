@@ -36,7 +36,7 @@ const codeSnippetContent =
   infiniteScroll
 >
   {catImages.map(src => (
-    <CarouselItem className='h-150 rounded-xl'>
+    <CarouselItem className='h-150 rounded-xl' key={src}>
       <img
         src={src}
         className='object-cover size-full'
