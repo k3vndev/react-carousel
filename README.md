@@ -7,7 +7,8 @@ Build your own navigation, transitions, and carousel behavior with ease.
 [![Made with React](https://img.shields.io/badge/Made%20with-React-blue?logo=react)](#)
 [![TypeScript](https://img.shields.io/badge/Built%20with-TypeScript-3178C6?logo=typescript\&logoColor=white)](#)
 
-<video src="./demo.mp4" autoplay loop muted playsinline></video>
+![Demo](./demo.gif)
+
 
 ## ✨ Features
 
