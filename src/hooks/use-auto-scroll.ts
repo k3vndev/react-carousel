@@ -54,14 +54,14 @@ export const useAutoScroll = (config: boolean | AutoScrollConfig, context: Carou
 
       if (infiniteScroll) {
         // In infinite mode, always move forward one tile to preserve loop continuity.
-        navigator.scrollRight(1)
+        navigator.scrollRight(visibleItems)
         restartScrollTimeout()
         return
       }
 
       const nextIndex: number = (() => {
         const maxIndex = itemsCount - visibleItems
-        const next = selectedIndex + 1
+        const next = selectedIndex + visibleItems
         return next <= maxIndex ? next : 0
       })()
 
