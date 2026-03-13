@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '@k3vndev/tw-animations';
 @source "../node_modules/@k3vndev/react-carousel";
 
 @utility text-gradient-yellow {
